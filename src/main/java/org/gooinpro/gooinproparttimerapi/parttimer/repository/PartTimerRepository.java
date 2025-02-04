@@ -12,6 +12,6 @@ public interface PartTimerRepository extends JpaRepository<PartTimerEntity, Long
     // 이메일(pemail)로 조회
     Optional<PartTimerEntity> findByPemail(String pemail);
 
-    // 삭제되지 않은 파트타이머 조회
+    // 삭제되지 않은 근로자만 조회
     Optional<PartTimerEntity> findByPnoAndPdeleteIsFalse(Long pno);
 }
