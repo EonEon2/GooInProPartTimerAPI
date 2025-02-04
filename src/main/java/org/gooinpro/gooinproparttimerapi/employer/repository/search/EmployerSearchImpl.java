@@ -1,4 +1,4 @@
 package org.gooinpro.gooinproparttimerapi.employer.repository.search;
 
-public class EmployerSearchImpl {
+public class EmployerSearchImpl implements EmployerSearch {
 }

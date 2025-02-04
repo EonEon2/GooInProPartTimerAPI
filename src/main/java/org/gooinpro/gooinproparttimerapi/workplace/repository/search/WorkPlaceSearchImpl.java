@@ -1,4 +1,4 @@
 package org.gooinpro.gooinproparttimerapi.workplace.repository.search;
 
-public class WorkPlaceSearchImpl {
+public class WorkPlaceSearchImpl implements WorkPlaceSearch {
 }
