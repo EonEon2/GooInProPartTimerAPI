@@ -16,7 +16,7 @@ public class PartTimerSearchImpl extends QuerydslRepositorySupport implements Pa
 
     @Override
     public List<PartTimerWorkHistoryDTO> getWorkHistory(Long pno) {
-        //
+
         return null;
     }
 
