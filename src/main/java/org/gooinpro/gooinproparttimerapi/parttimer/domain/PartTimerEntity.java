@@ -1,15 +1,12 @@
 package org.gooinpro.gooinproparttimerapi.parttimer.domain;
 
-
 import jakarta.persistence.*;
 import lombok.*;
-
 import java.sql.Timestamp;
 
 @Entity
 @Getter
 @Setter
-@Builder
 @AllArgsConstructor
 @NoArgsConstructor
 @ToString
@@ -18,22 +15,33 @@ public class PartTimerEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long pno;
+    @Column(nullable = false)
+    private Long pno; // pk
 
-    private Timestamp pbirth;
+    @Column(nullable = false, columnDefinition = "VARCHAR(100)")
+    private String pemail; // email
 
-    private boolean pdelete;
+    @Column(nullable = false, columnDefinition = "VARCHAR(100)")
+    private String ppw; // password
 
-    private String pemail;
+    @Column(nullable = false, columnDefinition = "VARCHAR(50)")
+    private String pname; // 이름
 
-    private boolean pgender;
+    @Column(nullable = false)
+    private Timestamp pbirth; // 생년월일
 
-    private String pname;
+    @Column(nullable = false)
+    private boolean pgender; // 성별 true = 남 , false = 여
 
-    private Timestamp pregdate;
+    @Column(columnDefinition = "BOOLEAN DEFAULT FALSE")
+    private boolean pdelete; // 삭제여부
 
-    private String proadAddress;
+    @Column(nullable = false, columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP")
+    private Timestamp pregdate; // 등록 시간
 
-    private String pdetailAddress;
+    @Column(columnDefinition = "VARCHAR(100)")
+    private String proadAddress; // 도로명 주소
 
+    @Column(columnDefinition = "VARCHAR(100)")
+    private String pdetailAddress; // 상세 주소
 }
