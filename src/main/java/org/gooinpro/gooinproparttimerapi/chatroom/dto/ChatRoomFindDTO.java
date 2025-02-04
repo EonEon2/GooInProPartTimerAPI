@@ -9,4 +9,6 @@ public class ChatRoomFindDTO {
     private Long pno;   //Primary Key
 
     private String email;   //채팅 상대 이메일
+
+    private String role;    //Admin or Employer or partTimer
 }
