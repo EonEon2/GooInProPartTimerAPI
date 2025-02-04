@@ -15,6 +15,8 @@ public class Participant {
 
     private String email;   //email
 
+    private ParticipantRole role;   //역할(Admin, Employer, PartTimer)
+
     private Date joinedAt;   //참여 시간
 
     private Date leftAt;    //퇴장 시간(null 이면 아직 퇴장 X)
