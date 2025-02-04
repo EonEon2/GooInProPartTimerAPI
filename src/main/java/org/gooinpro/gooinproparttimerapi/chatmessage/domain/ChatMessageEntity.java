@@ -19,13 +19,11 @@ public class ChatMessageEntity {
     @Id
     private String id;
 
-    private String sender; // 보내는사람
+    private String roomId;  //채팅방 id
 
-    private String receiver; // 받는사람
+    private String userId;  //채팅 보낸 user id;
 
-    private String message;
+    private String message; //채팅 message
 
-    private Date timestamp;
-
-    private String roomId;
+    private Date sent_at;   //채팅 보낸 시간
 }
