@@ -8,7 +8,7 @@ spring:
     password: gooinprodbuser
   data:
     mongodb:
-      uri: mongodb://gooinprochatdbuser:gooinprochatdbuser@localhost:27017/gooinprochatdb
+      uri: mongodb://gooinprochatdbuser:gooinprochatdbuser@localhost:27017/gooinprochatdb?authSource=gooinprochatdb
 
     hikari:
       minimum-idle: 2
