@@ -1,5 +1,6 @@
 package org.gooinpro.gooinproparttimerapi.workplace.repository.search;
 
+
 import org.gooinpro.gooinproparttimerapi.jobpostings.domain.JobPostingsEntity;
 import org.gooinpro.gooinproparttimerapi.workplace.domain.WorkPlaceEntity;
 import org.springframework.data.jpa.repository.support.QuerydslRepositorySupport;
