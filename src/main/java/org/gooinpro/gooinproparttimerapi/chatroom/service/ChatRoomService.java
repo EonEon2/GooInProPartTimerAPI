@@ -6,11 +6,16 @@ import org.gooinpro.gooinproparttimerapi.chatroom.domain.ChatRoomEntity;
 import org.gooinpro.gooinproparttimerapi.chatroom.dto.ChatRoomAddDTO;
 import org.gooinpro.gooinproparttimerapi.chatroom.dto.ChatRoomFindDTO;
 import org.gooinpro.gooinproparttimerapi.chatroom.repository.ChatRoomRepository;
+import org.springframework.data.mongodb.core.MongoTemplate;
+import org.springframework.data.mongodb.core.query.Criteria;
+import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.Instant;
+import java.util.Arrays;
 import java.util.Date;
+import java.util.List;
 
 @Service
 @Log4j2
@@ -19,9 +24,10 @@ import java.util.Date;
 public class ChatRoomService {
 
     private final ChatRoomRepository chatRoomRepository;
+    private final MongoTemplate mongoTemplate;
 
     //채팅방 새로 만들기
-    public String addChatRoom(ChatRoomAddDTO chatRoomAddDTO) {
+    public ChatRoomEntity addChatRoom(ChatRoomAddDTO chatRoomAddDTO) {
 
         ChatRoomEntity chatRoomEntity = ChatRoomEntity.builder()
                 .roomName(chatRoomAddDTO.getRoomName())
@@ -31,15 +37,28 @@ public class ChatRoomService {
                 .participants(chatRoomAddDTO.getParticipants())
                 .build();
 
-        chatRoomRepository.save(chatRoomEntity);
-
-        return "Successfully added chat room " + chatRoomAddDTO.getRoomName();
+        return chatRoomRepository.save(chatRoomEntity);
     }
 
     //채팅방 찾기(1대 1 채팅)
     public ChatRoomEntity findChatRoom(ChatRoomFindDTO chatRoomFindDTO) {
 
-        ChatRoomEntity chatRoom = null;
+        Query query = new Query();
+        query.addCriteria(Criteria.where("participants").size(2)
+                .and("participants.email").all(chatRoomFindDTO.getSenderEmail(), chatRoomFindDTO.getRecipientEmail()));
+
+        ChatRoomEntity chatRoom = mongoTemplate.findOne(query, ChatRoomEntity.class);
+
+        if (chatRoom == null) {
+
+            ChatRoomAddDTO dto = new ChatRoomAddDTO();
+
+
+            dto.setRoomName(null);
+            dto.setCreatedBy(chatRoomFindDTO.getSenderEmail());
+
+            chatRoom = addChatRoom(dto);
+        }
 
         return null;
     }

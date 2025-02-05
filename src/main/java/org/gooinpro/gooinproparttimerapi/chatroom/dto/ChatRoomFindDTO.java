@@ -1,6 +1,9 @@
 package org.gooinpro.gooinproparttimerapi.chatroom.dto;
 
+import jakarta.validation.constraints.Size;
 import lombok.Data;
+
+import java.util.Set;
 
 @Data
 //1대 1 채팅 찾기 DTO
@@ -8,7 +11,7 @@ public class ChatRoomFindDTO {
 
     private Long pno;   //Primary Key
 
-    private String email;   //채팅 상대 이메일
+    private String senderEmail;    //보내는 사람 Email
 
-    private String role;    //Admin or Employer or partTimer
+    private String recipientEmail;  //받는 사람 Email
 }
