@@ -34,6 +34,6 @@ spring:
 
 org:
   gooinpro:
-    accessTime: 1
+    accessTime: 100
     refreshTime: 10000
     alwaysNew: true

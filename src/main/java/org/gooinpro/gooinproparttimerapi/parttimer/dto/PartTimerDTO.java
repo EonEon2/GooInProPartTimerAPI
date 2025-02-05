@@ -15,6 +15,8 @@ public class PartTimerDTO {
 
     private String pemail;
 
+    private String ppw;
+
     private boolean pgender;
 
     private String pname;
@@ -24,5 +26,7 @@ public class PartTimerDTO {
     private String proadAddress;
 
     private String pdetailAddress;
+
+    private boolean isNew;
 
 }
