@@ -13,7 +13,7 @@ import java.util.Date;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Document(collection = "messagesChat")
+@Document(collection = "chat_messages")
 public class ChatMessageEntity {
 
     @Id
@@ -21,9 +21,9 @@ public class ChatMessageEntity {
 
     private String roomId;  //채팅방 id
 
-    private String userId;  //채팅 보낸 user id;
+    private String senderEmail;  //채팅 보낸 user email;
 
     private String message; //채팅 message
 
-    private Date sent_at;   //채팅 보낸 시간
+    private Date sentAt;   //채팅 보낸 시간
 }

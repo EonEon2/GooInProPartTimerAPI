@@ -46,8 +46,8 @@ public class ChatRoomService {
 
         ChatRoomEntity chatRoomEntity = ChatRoomEntity.builder()
                 .roomName(chatRoomAddDTO.getRoomName())
-                .roomCreated_at(Date.from(Instant.now()))
-                .roomUpdated_at(Date.from(Instant.now()))
+                .roomCreatedAt(Date.from(Instant.now()))
+                .roomUpdatedAt(Date.from(Instant.now()))
                 .createdBy(chatRoomAddDTO.getCreatedBy())
                 .participants(participants)
                 .build();

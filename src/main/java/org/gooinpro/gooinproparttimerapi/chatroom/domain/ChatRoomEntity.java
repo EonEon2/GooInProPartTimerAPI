@@ -14,7 +14,7 @@ import java.util.List;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Document(collection = "messagesRoom")
+@Document(collection = "chat_rooms")
 public class ChatRoomEntity {
 
     @Id
@@ -22,9 +22,9 @@ public class ChatRoomEntity {
 
     private String roomName;    //채팅방 이름
 
-    private Date roomCreated_at;    //채팅방 생성 시간
+    private Date roomCreatedAt;    //채팅방 생성 시간
 
-    private Date roomUpdated_at;    //채팅방 update 시간
+    private Date roomUpdatedAt;    //채팅방 update 시간
 
     private String createdBy;   //채팅방 생성자 이메일
 
