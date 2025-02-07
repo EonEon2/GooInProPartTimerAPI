@@ -35,13 +35,13 @@ public class JobMatchingsEntity {
     private Timestamp jmregdate;    // 매칭 등록일
 
     @Column(nullable = false)
-    private Timestamp jmstartDate;  // 근무 시작일
+    private Timestamp jmstartDate;  // 근무 시작일e
 
     @Column
-    private Timestamp jmendDate;    // 근무 종료일 (정하지 않을 수 있음)
+    private Timestamp jmendDate;    // 근무 종료일
 
     @Column(nullable = false)
-    private Integer jmhourlyRate;   // 시급 (협의과정에서 달라질 수 있음)
+    private Integer jmhourlyRate;   // 시급
 
     @Column(nullable = false, columnDefinition = "VARCHAR(7) DEFAULT '0000000'")
     private String jmworkDays;      // 근무요일 (월~일, 1이면 출근)
