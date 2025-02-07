@@ -37,3 +37,10 @@ org:
     accessTime: 100
     refreshTime: 10000
     alwaysNew: true
+
+naver:
+  map:
+    api:
+      client-id: ${NAVER_MAP_API_CLIENT_ID}
+      client-secret: ${NAVER_MAP_API_CLIENT_SECRET}
+      url: ${NAVER_MAP_API_URL}
