@@ -18,7 +18,13 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponents;
 import org.springframework.web.util.UriComponentsBuilder;
-
+import lombok.RequiredArgsConstructor;
+import lombok.extern.log4j.Log4j2;
+import org.gooinpro.gooinproparttimerapi.parttimer.domain.PartTimerEntity;
+import org.gooinpro.gooinproparttimerapi.parttimer.dto.PartTimerDetailDTO;
+import org.gooinpro.gooinproparttimerapi.parttimer.dto.PartTimerRegiserDTO;
+import org.gooinpro.gooinproparttimerapi.parttimer.repository.PartTimerRepository;
+import org.springframework.stereotype.Service;
 import java.util.LinkedHashMap;
 import java.util.Optional;
 import java.util.UUID;
@@ -30,7 +36,6 @@ import java.util.UUID;
 public class PartTimerService {
 
     private final PartTimerRepository partTimerRepository;
-
     private final PasswordEncoder passwordEncoder;
 
     public void registerPartTimer(Long pno, PartTimerRegiserDTO partTimerRegiserDTO) {
@@ -157,4 +162,46 @@ public class PartTimerService {
         return kakaoAccount.get("email");
     }
 
+
+
+
+    // 개인정보 조회
+    public PartTimerDetailDTO getOnePartTimerInfo(Long pno) {
+        PartTimerEntity partTimer = partTimerRepository.findByPnoAndPdeleteIsFalse(pno)
+                .orElseThrow(() -> new RuntimeException("조회할 사용자를 찾을 수 없습니다."));
+
+        return PartTimerDetailDTO.builder()
+                .pemail(partTimer.getPemail())
+                .pname(partTimer.getPname())
+                .pbirth(partTimer.getPbirth())
+                .pgender(partTimer.isPgender())
+                .proadAddress(partTimer.getProadAddress())
+                .pdetailAddress(partTimer.getPdetailAddress())
+                .pregdate(partTimer.getPregdate())
+                .build();
+    }
+
+    // 개인정보 등록/수정
+    public void editPartTimerInfo(Long pno, PartTimerRegiserDTO dto) {
+        PartTimerEntity partTimer = partTimerRepository.findByPnoAndPdeleteIsFalse(pno)
+                .orElseThrow(() -> new RuntimeException("수정할 사용자를 찾을 수 없습니다."));
+
+        // 정보 업데이트
+        partTimer.setPname(dto.getPname());
+        partTimer.setPbirth(dto.getPbirth());
+        partTimer.setPgender(dto.isPgender());
+        partTimer.setProadAddress(dto.getProadAddress());
+        partTimer.setPdetailAddress(dto.getPdetailAddress());
+
+        partTimerRepository.save(partTimer);
+    }
+
+    // 계정 삭제 (소프트 딜리트)
+    public void deletePartTimerAccount(Long pno) {
+        PartTimerEntity partTimer = partTimerRepository.findByPnoAndPdeleteIsFalse(pno)
+                .orElseThrow(() -> new RuntimeException("삭제할 사용자를 찾을 수 없습니다."));
+
+        partTimer.setPdelete(true);
+        partTimerRepository.save(partTimer);
+    }
 }
