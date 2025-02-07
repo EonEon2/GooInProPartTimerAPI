@@ -18,6 +18,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @Log4j2
@@ -44,8 +45,26 @@ public class ChatRoomService {
         participants.forEach(participant
                 -> participant.setJoinedAt(Date.from(Instant.now())));
 
+
+
+        String roomName;
+
+        if(chatRoomAddDTO.getRoomName() != null) {
+
+            roomName = chatRoomAddDTO.getRoomName();
+        } else {
+
+            List<String> names = chatRoomAddDTO.getParticipants()
+                    .stream().map(Participant::getEmail).collect(Collectors.toList());
+
+            log.info("000000000000000000000000000");
+            log.info(names);
+
+            roomName = names.stream().collect(Collectors.joining(", "));
+        }
+
         ChatRoomEntity chatRoomEntity = ChatRoomEntity.builder()
-                .roomName(chatRoomAddDTO.getRoomName())
+                .roomName(roomName)
                 .roomCreatedAt(Date.from(Instant.now()))
                 .roomUpdatedAt(Date.from(Instant.now()))
                 .createdBy(chatRoomAddDTO.getCreatedBy())
