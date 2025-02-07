@@ -25,4 +25,10 @@ public class WorkPlaceEntity {
 
     private String wdetailAddress; // 상세 주소
 
+    private String wlati; // 위도
+
+    private String wlong; // 경도
+
+    private boolean wdelete;
+
 }
