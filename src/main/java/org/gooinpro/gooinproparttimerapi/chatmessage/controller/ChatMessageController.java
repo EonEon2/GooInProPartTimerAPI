@@ -29,6 +29,6 @@ public class ChatMessageController {
         ChatMessageEntity chatMessageEntity = chatMessageService.saveMessageService(chatMessageDTO);
 
         messagingTemplate.convertAndSend(
-                "/topic/chat/" + Long.parseLong(chatMessageDTO.getRoomId()), chatMessageEntity);
+                "/topic/chat/" + chatMessageDTO.getRoomId(), chatMessageEntity);
     }
 }
