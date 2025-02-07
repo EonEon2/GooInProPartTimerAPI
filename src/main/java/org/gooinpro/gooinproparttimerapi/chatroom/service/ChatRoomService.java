@@ -6,7 +6,11 @@ import org.gooinpro.gooinproparttimerapi.chatroom.domain.ChatRoomEntity;
 import org.gooinpro.gooinproparttimerapi.chatroom.domain.Participant;
 import org.gooinpro.gooinproparttimerapi.chatroom.dto.ChatRoomAddDTO;
 import org.gooinpro.gooinproparttimerapi.chatroom.dto.ChatRoomFindDTO;
+import org.gooinpro.gooinproparttimerapi.chatroom.dto.ChatRoomListDTO;
 import org.gooinpro.gooinproparttimerapi.chatroom.repository.ChatRoomRepository;
+import org.gooinpro.gooinproparttimerapi.common.dto.PageRequestDTO;
+import org.gooinpro.gooinproparttimerapi.common.dto.PageResponseDTO;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
@@ -102,5 +106,31 @@ public class ChatRoomService {
         }
 
         return chatRoom;
+    }
+
+    //내 채팅방 리스트(페이징 포함)
+    public PageResponseDTO<ChatRoomListDTO> chatRoomListService(
+            String email, PageRequestDTO pageRequestDTO) {
+
+        int page = pageRequestDTO.getPage();
+        int size = pageRequestDTO.getSize();
+        int skip = (page - 1) * size;
+
+        Criteria criteria = new Criteria().andOperator(
+                Criteria.where("participants").elemMatch(Criteria.where("email").is(email)),
+                Criteria.where("participants").elemMatch(Criteria.where("leftAt").exists(false))
+        );
+
+        Query query = new Query(criteria)
+                .with(Sort.by(Sort.Order.desc("sentAt")))  // sentAt 기준 내림차순 정렬
+                .skip(skip)
+                .limit(size);
+
+        log.info(query);
+
+        List<ChatRoomListDTO> dtoList = mongoTemplate.find(query, ChatRoomListDTO.class);
+        int totalCount = (int)mongoTemplate.count(query, ChatRoomListDTO.class);    //limit 는 count 에 영향 안줌
+
+        return new PageResponseDTO<>(dtoList, pageRequestDTO, totalCount);
     }
 }
