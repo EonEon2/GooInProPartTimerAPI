@@ -47,24 +47,24 @@ public class PartTimerService {
 
     }
 
-        public PartTimerDTO authenticate(String email, String password) {
-
-        Optional<PartTimerEntity> result = partTimerRepository.findByPemail(email);
-
-            PartTimerEntity partTimer = result.orElseThrow(() -> PartTimerExceptions.BAD_AUTH.get());
-
-        boolean match = passwordEncoder.matches(password, partTimer.getPpw());
-
-        if(!match) {
-            throw CommonExceptions.READ_ERROR.get();
-        }
-
-        PartTimerDTO partTimerDTO = new PartTimerDTO();
-            partTimerDTO.setPemail(email);
-            partTimerDTO.setPpw(partTimer.getPpw());
-
-        return partTimerDTO;
-    }
+//        public PartTimerDTO authenticate(String email, String password) {
+//
+//        Optional<PartTimerEntity> result = partTimerRepository.findByPemail(email);
+//
+//            PartTimerEntity partTimer = result.orElseThrow(() -> PartTimerExceptions.BAD_AUTH.get());
+//
+//        boolean match = passwordEncoder.matches(password, partTimer.getPpw());
+//
+//        if(!match) {
+//            throw CommonExceptions.READ_ERROR.get();
+//        }
+//
+//        PartTimerDTO partTimerDTO = new PartTimerDTO();
+//            partTimerDTO.setPemail(email);
+//            partTimerDTO.setPpw(partTimer.getPpw());
+//
+//        return partTimerDTO;
+//    }
 
 
     private PartTimerDTO returnPartTimer(String email) {
