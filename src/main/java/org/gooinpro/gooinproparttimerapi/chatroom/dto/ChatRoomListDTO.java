@@ -9,6 +9,8 @@ import java.util.Date;
 @Document(collection = "chat_rooms")
 public class ChatRoomListDTO {
 
+    private String id;
+
     private String roomName;    //채팅방 이름
 
     private String message; //마지막 메세지 내용
