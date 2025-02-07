@@ -15,5 +15,5 @@ public class JobPostingsListDTO {
 
     private int jphourlyRate;   //시급
 
-    private Timestamp jpenddate;
+    private Timestamp jpenddate; // 마감 시간
 }
