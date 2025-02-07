@@ -20,6 +20,7 @@ public class ChatRoomController {
 
     private final ChatRoomService chatRoomService;
 
+    //채팅방 만들기
     @PostMapping("create")
     public ResponseEntity<ChatRoomEntity> createChatRoom(@RequestBody ChatRoomAddDTO dto) {
 
@@ -29,12 +30,14 @@ public class ChatRoomController {
         return ResponseEntity.ok(chatRoomService.addChatRoomService(dto));
     }
 
+    //채팅방 찾기(없으면 새로 만들어서 반환
     @PostMapping("find")
     public ResponseEntity<ChatRoomEntity> findChatRoom(@RequestBody ChatRoomFindDTO dto) {
 
         return ResponseEntity.ok(chatRoomService.findChatRoomService(dto));
     }
 
+    //내 채팅방 리스트 get(paging 처리)
     @GetMapping("list/{email}")
     public ResponseEntity<PageResponseDTO<ChatRoomListDTO>> chatRoomList(
             @PathVariable String email, PageRequestDTO pageRequestDTO) {
