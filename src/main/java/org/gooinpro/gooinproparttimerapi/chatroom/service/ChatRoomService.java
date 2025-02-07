@@ -45,8 +45,6 @@ public class ChatRoomService {
         participants.forEach(participant
                 -> participant.setJoinedAt(Date.from(Instant.now())));
 
-
-
         String roomName;
 
         if(chatRoomAddDTO.getRoomName() != null) {
@@ -56,9 +54,6 @@ public class ChatRoomService {
 
             List<String> names = chatRoomAddDTO.getParticipants()
                     .stream().map(Participant::getEmail).collect(Collectors.toList());
-
-            log.info("000000000000000000000000000");
-            log.info(names);
 
             roomName = names.stream().collect(Collectors.joining(", "));
         }
