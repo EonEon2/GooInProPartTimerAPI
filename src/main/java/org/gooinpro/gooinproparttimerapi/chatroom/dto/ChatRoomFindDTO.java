@@ -2,10 +2,12 @@ package org.gooinpro.gooinproparttimerapi.chatroom.dto;
 
 import jakarta.validation.constraints.Size;
 import lombok.Data;
+import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.util.Set;
 
 @Data
+@Document(collection = "chat_rooms")
 //1대 1 채팅 찾기 DTO
 public class ChatRoomFindDTO {
 

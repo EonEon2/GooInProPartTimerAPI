@@ -5,12 +5,12 @@ import lombok.extern.log4j.Log4j2;
 import org.gooinpro.gooinproparttimerapi.chatroom.domain.ChatRoomEntity;
 import org.gooinpro.gooinproparttimerapi.chatroom.dto.ChatRoomAddDTO;
 import org.gooinpro.gooinproparttimerapi.chatroom.dto.ChatRoomFindDTO;
+import org.gooinpro.gooinproparttimerapi.chatroom.dto.ChatRoomListDTO;
 import org.gooinpro.gooinproparttimerapi.chatroom.service.ChatRoomService;
+import org.gooinpro.gooinproparttimerapi.common.dto.PageRequestDTO;
+import org.gooinpro.gooinproparttimerapi.common.dto.PageResponseDTO;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/v1/chatroom")
@@ -33,5 +33,14 @@ public class ChatRoomController {
     public ResponseEntity<ChatRoomEntity> findChatRoom(@RequestBody ChatRoomFindDTO dto) {
 
         return ResponseEntity.ok(chatRoomService.findChatRoomService(dto));
+    }
+
+    @GetMapping("list/{email}")
+    public ResponseEntity<PageResponseDTO<ChatRoomListDTO>> chatRoomList(
+            @PathVariable String email, PageRequestDTO pageRequestDTO) {
+
+        log.info(email);
+
+        return ResponseEntity.ok(chatRoomService.chatRoomListService(email, pageRequestDTO));
     }
 }

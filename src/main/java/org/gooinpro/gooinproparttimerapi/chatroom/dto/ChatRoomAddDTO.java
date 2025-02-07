@@ -2,10 +2,12 @@ package org.gooinpro.gooinproparttimerapi.chatroom.dto;
 
 import lombok.Data;
 import org.gooinpro.gooinproparttimerapi.chatroom.domain.Participant;
+import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.util.List;
 
 @Data
+@Document(collection = "chat_rooms")
 public class ChatRoomAddDTO {
 
     private String roomName;    //채팅방 이름
