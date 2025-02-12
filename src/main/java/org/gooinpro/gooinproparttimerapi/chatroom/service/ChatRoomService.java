@@ -124,9 +124,14 @@ public class ChatRoomService {
         int skip = (page - 1) * size;
 
         Criteria criteria = new Criteria().andOperator(
-                Criteria.where("participants").elemMatch(Criteria.where("email").is(email)),
-                Criteria.where("participants").elemMatch(Criteria.where("leftAt").exists(false))
+                Criteria.where("participants").elemMatch(
+                        new Criteria().andOperator(
+                                Criteria.where("email").is(email),
+                                Criteria.where("leftAt").exists(false)
+                        )
+                )
         );
+
 
         Query query = new Query(criteria)
                 .with(Sort.by(Sort.Order.desc("sentAt")))  // sentAt 기준 내림차순 정렬
