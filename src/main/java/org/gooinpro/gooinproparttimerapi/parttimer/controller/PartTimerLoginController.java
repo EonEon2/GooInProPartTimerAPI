@@ -5,6 +5,7 @@ import io.jsonwebtoken.ExpiredJwtException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.gooinpro.gooinproparttimerapi.parttimer.dto.PartTimerDTO;
+import org.gooinpro.gooinproparttimerapi.parttimer.dto.PartTimerRegiserDTO;
 import org.gooinpro.gooinproparttimerapi.parttimer.dto.TokenRequestDTO;
 import org.gooinpro.gooinproparttimerapi.parttimer.dto.TokenResponseDTO;
 import org.gooinpro.gooinproparttimerapi.parttimer.exception.PartTimerExceptions;
@@ -37,6 +38,17 @@ public class PartTimerLoginController {
     private boolean alwaysNew;
 
 
+    @PutMapping("reg/{pno}")
+    public ResponseEntity<String> registerPartTimer(
+            @PathVariable Long pno,
+            @RequestBody PartTimerRegiserDTO partTimerRegiserDTO) {
+
+        partTimerService.registerPartTimer(pno, partTimerRegiserDTO);
+
+        return ResponseEntity.ok("partTimer Info Register Complete");
+    }
+
+
     private TokenResponseDTO generateTokenResponseDTO(PartTimerDTO partTimerDTO) {
 
         Map<String, Object> claimMap = Map.of("email", partTimerDTO.getPemail());
@@ -56,32 +68,32 @@ public class PartTimerLoginController {
 
     }
 
-    @PostMapping("makeToken")
-    public ResponseEntity<TokenResponseDTO> makeToken(
-            @RequestBody @Validated TokenRequestDTO tokenRequestDTO) {
-
-        log.info("============================");
-        log.info("makeToken");
-
-        PartTimerDTO partTimerDTO =
-                partTimerService.authenticate(tokenRequestDTO.getEmail(), tokenRequestDTO.getPw());
-
-        log.info("partTimerDTO: " + partTimerDTO);
-
-        Map<String, Object> claimMap =
-                Map.of("email", partTimerDTO.getPemail());
-
-        String accessToken = jwtUtil.createToken(claimMap, accessTime);
-        String refreshToken = jwtUtil.createToken(claimMap, refreshTime);
-
-        TokenResponseDTO tokenResponseDTO = new TokenResponseDTO();
-        tokenResponseDTO.setAccessToken(accessToken);
-        tokenResponseDTO.setRefreshToken(refreshToken);
-        tokenResponseDTO.setPemail(partTimerDTO.getPemail());
-        tokenResponseDTO.setNew(partTimerDTO.isNew());
-
-        return ResponseEntity.ok(tokenResponseDTO);
-    }
+//    @PostMapping("makeToken")
+//    public ResponseEntity<TokenResponseDTO> makeToken(
+//            @RequestBody @Validated TokenRequestDTO tokenRequestDTO) {
+//
+//        log.info("============================");
+//        log.info("makeToken");
+//
+//        PartTimerDTO partTimerDTO =
+//                partTimerService.authenticate(tokenRequestDTO.getEmail(), tokenRequestDTO.getPw());
+//
+//        log.info("partTimerDTO: " + partTimerDTO);
+//
+//        Map<String, Object> claimMap =
+//                Map.of("email", partTimerDTO.getPemail());
+//
+//        String accessToken = jwtUtil.createToken(claimMap, accessTime);
+//        String refreshToken = jwtUtil.createToken(claimMap, refreshTime);
+//
+//        TokenResponseDTO tokenResponseDTO = new TokenResponseDTO();
+//        tokenResponseDTO.setAccessToken(accessToken);
+//        tokenResponseDTO.setRefreshToken(refreshToken);
+//        tokenResponseDTO.setPemail(partTimerDTO.getPemail());
+//        tokenResponseDTO.setNew(partTimerDTO.isNew());
+//
+//        return ResponseEntity.ok(tokenResponseDTO);
+//    }
 
     // 리프레쉬 토큰
     @PostMapping(value = "refreshToken",

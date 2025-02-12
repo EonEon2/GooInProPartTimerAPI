@@ -51,10 +51,10 @@ public class JobPostingsEntity {
     private String jpworkDays = "0000000";  //근무 요일(월~일, 1이면 출근)
 
     @Column(nullable = false)
-    private int jpminDuration;  //최소 근무 기간
+    private Integer jpminDuration;  //최소 근무 기간
 
-    @Column(columnDefinition = "int default 0", nullable = false)
-    private int jpmaxDuration = 0;  //최대 근무 기간(0 이면 제한 없음)
+    @Column(columnDefinition = "int default 0", nullable = true)
+    private Integer jpmaxDuration = 0;
 
     private Time jpworkStartTime;   //근무 시작 시간
 
