@@ -110,6 +110,27 @@ public class ChatRoomService {
 
             if(chatRoom == null)
                 throw new RuntimeException("채팅방 생성 실패");
+        } else {
+
+            Participant tmp = chatRoom.getParticipants().stream()
+                    .filter(participant ->
+                            chatRoomFindDTO.getSenderEmail().equals(participant.getEmail())
+                                    && participant.getLeftAt() != null
+                    )
+                    .findFirst()
+                    .orElse(null);
+
+            if(tmp != null) {
+
+                List<Participant> participants = chatRoom.getParticipants();
+
+                participants.remove(tmp);
+                participants.add(new Participant(chatRoomFindDTO.getSenderEmail(), Date.from(Instant.now())));
+
+                chatRoom.setParticipants(participants);
+
+                return chatRoomRepository.save(chatRoom);
+            }
         }
 
         return chatRoom;
