@@ -2,11 +2,13 @@ package org.gooinpro.gooinproparttimerapi.chatroom.service;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
+import org.gooinpro.gooinproparttimerapi.chatmessage.repository.ChatMessageRepository;
 import org.gooinpro.gooinproparttimerapi.chatroom.domain.ChatRoomEntity;
 import org.gooinpro.gooinproparttimerapi.chatroom.domain.Participant;
 import org.gooinpro.gooinproparttimerapi.chatroom.dto.ChatRoomAddDTO;
 import org.gooinpro.gooinproparttimerapi.chatroom.dto.ChatRoomFindDTO;
 import org.gooinpro.gooinproparttimerapi.chatroom.dto.ChatRoomListDTO;
+import org.gooinpro.gooinproparttimerapi.chatroom.dto.ChatRoomOutDTO;
 import org.gooinpro.gooinproparttimerapi.chatroom.repository.ChatRoomRepository;
 import org.gooinpro.gooinproparttimerapi.common.dto.PageRequestDTO;
 import org.gooinpro.gooinproparttimerapi.common.dto.PageResponseDTO;
@@ -18,10 +20,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.Instant;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -31,6 +30,7 @@ import java.util.stream.Collectors;
 public class ChatRoomService {
 
     private final ChatRoomRepository chatRoomRepository;
+    private final ChatMessageRepository chatMessageRepository;
     private final MongoTemplate mongoTemplate;
 
     //채팅방 새로운 참가자 만들기
@@ -40,6 +40,13 @@ public class ChatRoomService {
                 .email(email)
                 .joinedAt(Date.from(Instant.now()))
                 .build();
+    }
+
+    //채팅방 참가자 수 return(leftAt 값 있는 참가자 제외)
+    private int countParticipants(List<Participant> participants) {
+        return (int) participants.stream()
+                .filter(participant -> participant.getLeftAt() == null)
+                .count();
     }
 
     //채팅방 새로 만들기
@@ -132,5 +139,35 @@ public class ChatRoomService {
         int totalCount = (int)mongoTemplate.count(query, ChatRoomListDTO.class);    //limit 는 count 에 영향 안줌
 
         return new PageResponseDTO<>(dtoList, pageRequestDTO, totalCount);
+    }
+
+    //채팅방 나가기
+    public String chatRoomOutService(ChatRoomOutDTO chatRoomOutDTO) {
+
+        ChatRoomEntity chatRoomEntity = chatRoomRepository.findById(chatRoomOutDTO.getRoomId())
+                .orElseThrow(() -> new RuntimeException("findChatRoom failed"));
+
+        List<Participant> participants = chatRoomEntity.getParticipants();
+
+        //참여자가 1 이하일 때 메세지, 채팅방 Hard Delete
+        if(countParticipants(participants) <= 1) {
+
+            chatMessageRepository.deleteAllByRoomId(chatRoomOutDTO.getRoomId());
+            chatRoomRepository.deleteById(chatRoomOutDTO.getRoomId());
+
+            return "Delete All Messages and ChatRoom";
+        }
+
+        //Email 값 찾아서 leftAt 값 넣기
+        participants.forEach(participant -> {
+            if(participant.getEmail().equals(chatRoomOutDTO.getEmail()))
+                participant.setLeftAt(Date.from(Instant.now()));
+        });
+
+        chatRoomEntity.setParticipants(participants);
+
+        chatRoomRepository.save(chatRoomEntity);
+
+        return "Chat Room left Successfully";
     }
 }

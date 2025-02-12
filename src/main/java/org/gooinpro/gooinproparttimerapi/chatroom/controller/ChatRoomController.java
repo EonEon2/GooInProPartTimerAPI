@@ -6,6 +6,7 @@ import org.gooinpro.gooinproparttimerapi.chatroom.domain.ChatRoomEntity;
 import org.gooinpro.gooinproparttimerapi.chatroom.dto.ChatRoomAddDTO;
 import org.gooinpro.gooinproparttimerapi.chatroom.dto.ChatRoomFindDTO;
 import org.gooinpro.gooinproparttimerapi.chatroom.dto.ChatRoomListDTO;
+import org.gooinpro.gooinproparttimerapi.chatroom.dto.ChatRoomOutDTO;
 import org.gooinpro.gooinproparttimerapi.chatroom.service.ChatRoomService;
 import org.gooinpro.gooinproparttimerapi.common.dto.PageRequestDTO;
 import org.gooinpro.gooinproparttimerapi.common.dto.PageResponseDTO;
@@ -45,5 +46,15 @@ public class ChatRoomController {
         log.info(email);
 
         return ResponseEntity.ok(chatRoomService.chatRoomListService(email, pageRequestDTO));
+    }
+
+    //채팅방 나가기
+    @PutMapping("out")
+    public ResponseEntity<String> chatRoomOut(@RequestBody ChatRoomOutDTO chatRoomOutDTO) {
+
+        log.info("ChatRoomOutController Log");
+        log.info(chatRoomOutDTO.toString());
+
+        return ResponseEntity.ok(chatRoomService.chatRoomOutService(chatRoomOutDTO));
     }
 }
