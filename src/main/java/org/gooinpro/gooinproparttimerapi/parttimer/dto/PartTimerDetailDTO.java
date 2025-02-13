@@ -11,6 +11,7 @@ import java.sql.Timestamp;
 @NoArgsConstructor
 @AllArgsConstructor
 public class PartTimerDetailDTO {
+    private Long pno;
     private String pemail;
     private String pname;
     private Timestamp pbirth;
