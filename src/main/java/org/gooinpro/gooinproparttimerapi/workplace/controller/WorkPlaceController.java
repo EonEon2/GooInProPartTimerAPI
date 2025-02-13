@@ -23,7 +23,7 @@ import java.util.List;
 import java.util.Map;
 
 @RestController
-@RequestMapping("/parttimer/api/v1/workplace")
+@RequestMapping("/part/api/v1/workplace")
 @Log4j2
 @RequiredArgsConstructor
 public class WorkPlaceController {

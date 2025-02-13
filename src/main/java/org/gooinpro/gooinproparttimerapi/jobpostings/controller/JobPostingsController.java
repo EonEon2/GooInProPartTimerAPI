@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/parttimer/api/v1/jobposting")
+@RequestMapping("/part/api/v1/jobposting")
 @Log4j2
 @RequiredArgsConstructor
 public class JobPostingsController {

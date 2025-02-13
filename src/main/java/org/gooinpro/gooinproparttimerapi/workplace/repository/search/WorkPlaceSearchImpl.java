@@ -30,7 +30,6 @@ public class WorkPlaceSearchImpl extends QuerydslRepositorySupport implements Wo
                 pageRequestDTO.getSize());
 
         QWorkPlaceEntity work = QWorkPlaceEntity.workPlaceEntity;
-        QEmployerEntity employer = QEmployerEntity.employerEntity;
 
         JPQLQuery<WorkPlaceEntity> query = from(work);
 

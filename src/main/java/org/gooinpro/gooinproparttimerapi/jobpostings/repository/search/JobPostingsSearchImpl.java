@@ -14,6 +14,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.support.QuerydslRepositorySupport;
 
+import java.sql.Timestamp;
 import java.util.List;
 
 public class JobPostingsSearchImpl extends QuerydslRepositorySupport implements JobPostingsSearch {
@@ -45,10 +46,14 @@ public class JobPostingsSearchImpl extends QuerydslRepositorySupport implements 
         JPQLQuery<JobPostingsListDTO> tupleQuery = query.select(
                 Projections.bean(JobPostingsListDTO.class,
                         jobPostings.jpno,
+                        jobPostings.workPlace.wpno,
                         jobPostings.jpname,
                         jobPostings.workPlace.wroadAddress,
+                        jobPostings.workPlace.wdetailAddress,
                         jobPostings.jphourlyRate,
-                        jobPostings.jpenddate)
+                        jobPostings.jpenddate,
+                        jobPostings.workPlace.wlati,
+                        jobPostings.workPlace.wlong)
         );
 
         List<JobPostingsListDTO> dtoList = tupleQuery.fetch();
