@@ -14,4 +14,6 @@ public interface PartTimerRepository extends JpaRepository<PartTimerEntity, Long
 
     // 삭제되지 않은 근로자만 조회
     Optional<PartTimerEntity> findByPnoAndPdeleteIsFalse(Long pno);
+
+    Long pno(Long pno);
 }
