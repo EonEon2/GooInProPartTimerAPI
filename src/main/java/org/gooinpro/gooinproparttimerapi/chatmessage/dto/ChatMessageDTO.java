@@ -2,6 +2,8 @@ package org.gooinpro.gooinproparttimerapi.chatmessage.dto;
 
 import lombok.Data;
 
+import java.util.Date;
+
 @Data
 public class ChatMessageDTO {
 

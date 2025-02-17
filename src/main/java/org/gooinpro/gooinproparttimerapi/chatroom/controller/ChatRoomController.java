@@ -14,7 +14,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/api/v1/chatroom")
+@RequestMapping("/part/api/v1/chatroom")
 @RequiredArgsConstructor
 @Log4j2
 public class ChatRoomController {
