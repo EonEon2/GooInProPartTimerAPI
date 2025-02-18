@@ -171,6 +171,7 @@ public class PartTimerService {
                 .orElseThrow(() -> new RuntimeException("조회할 사용자를 찾을 수 없습니다."));
 
         return PartTimerDetailDTO.builder()
+                .pno(partTimer.getPno())      // pno 추가
                 .pemail(partTimer.getPemail())
                 .pname(partTimer.getPname())
                 .pbirth(partTimer.getPbirth())

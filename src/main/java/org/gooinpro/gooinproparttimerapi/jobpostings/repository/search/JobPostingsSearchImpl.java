@@ -8,12 +8,15 @@ import org.gooinpro.gooinproparttimerapi.employer.domain.EmployerEntity;
 import org.gooinpro.gooinproparttimerapi.employer.domain.QEmployerEntity;
 import org.gooinpro.gooinproparttimerapi.jobpostings.domain.JobPostingsEntity;
 import org.gooinpro.gooinproparttimerapi.jobpostings.domain.QJobPostingsEntity;
+import org.gooinpro.gooinproparttimerapi.jobpostings.dto.JobPostingDetailDTO;
 import org.gooinpro.gooinproparttimerapi.jobpostings.dto.JobPostingsListDTO;
 import org.gooinpro.gooinproparttimerapi.workplace.domain.QWorkPlaceEntity;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.support.QuerydslRepositorySupport;
 
+import java.sql.Time;
+import java.sql.Timestamp;
 import java.util.List;
 
 public class JobPostingsSearchImpl extends QuerydslRepositorySupport implements JobPostingsSearch {
@@ -45,10 +48,14 @@ public class JobPostingsSearchImpl extends QuerydslRepositorySupport implements 
         JPQLQuery<JobPostingsListDTO> tupleQuery = query.select(
                 Projections.bean(JobPostingsListDTO.class,
                         jobPostings.jpno,
+                        jobPostings.workPlace.wpno,
                         jobPostings.jpname,
                         jobPostings.workPlace.wroadAddress,
+                        jobPostings.workPlace.wdetailAddress,
                         jobPostings.jphourlyRate,
-                        jobPostings.jpenddate)
+                        jobPostings.jpenddate,
+                        jobPostings.workPlace.wlati,
+                        jobPostings.workPlace.wlong)
         );
 
         List<JobPostingsListDTO> dtoList = tupleQuery.fetch();
@@ -62,4 +69,35 @@ public class JobPostingsSearchImpl extends QuerydslRepositorySupport implements 
                 .build();
 
     }
+
+    @Override
+    public JobPostingDetailDTO jobPostingDetail(Long jpno) {
+
+        QJobPostingsEntity jobPostings = QJobPostingsEntity.jobPostingsEntity;
+        QWorkPlaceEntity workPlace = QWorkPlaceEntity.workPlaceEntity;
+
+        JPQLQuery<JobPostingsEntity> query = from(jobPostings);
+
+        query.leftJoin(workPlace).on(workPlace.eq(jobPostings.workPlace));
+
+        query.where(jobPostings.jpno.eq(jpno));
+
+        JPQLQuery<JobPostingDetailDTO> tupleQuery = query.select(
+                Projections.bean(JobPostingDetailDTO.class,
+                        jobPostings.jpno,
+                        jobPostings.jpname,
+                        jobPostings.workPlace.wroadAddress,
+                        jobPostings.workPlace.wdetailAddress,
+                        jobPostings.jphourlyRate,
+                        jobPostings.jpworkDays,
+                        jobPostings.jpworkStartTime,
+                        jobPostings.jpworkEndTime)
+        );
+
+        JobPostingDetailDTO list = tupleQuery.fetchFirst();
+
+        return list;
+    }
 }
+
+
