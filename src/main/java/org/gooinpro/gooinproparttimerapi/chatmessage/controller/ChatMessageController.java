@@ -4,15 +4,21 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.gooinpro.gooinproparttimerapi.chatmessage.domain.ChatMessageEntity;
 import org.gooinpro.gooinproparttimerapi.chatmessage.dto.ChatMessageDTO;
+import org.gooinpro.gooinproparttimerapi.chatmessage.dto.ChatMessageReadDTO;
 import org.gooinpro.gooinproparttimerapi.chatmessage.service.ChatMessageService;
+import org.gooinpro.gooinproparttimerapi.common.dto.PageRequestDTO;
+import org.gooinpro.gooinproparttimerapi.common.dto.PageResponseDTO;
+import org.springframework.http.ResponseEntity;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/api/v1/chat")
+@RequestMapping("/part/api/v1/chat")
 @RequiredArgsConstructor
 @Log4j2
 public class ChatMessageController {
@@ -30,5 +36,12 @@ public class ChatMessageController {
 
         messagingTemplate.convertAndSend(
                 "/topic/chat/" + chatMessageDTO.getRoomId(), chatMessageEntity);
+    }
+
+    @GetMapping("load/{roomId}")
+    public ResponseEntity<PageResponseDTO<ChatMessageReadDTO>> loadMessages(
+            @PathVariable String roomId, PageRequestDTO pageRequestDTO) {
+
+        return ResponseEntity.ok(chatMessageService.getMessageService(roomId, pageRequestDTO));
     }
 }
