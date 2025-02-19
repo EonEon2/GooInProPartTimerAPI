@@ -46,24 +46,15 @@ public class ChatMessageService {
     }
 
     //채팅방 들어갔을 때 메세지 가져오기
-    public PageResponseDTO<ChatMessageReadDTO> getMessageService(String roomId, PageRequestDTO pageRequestDTO) {
-
-        int page = pageRequestDTO.getPage();
-        int size = pageRequestDTO.getSize();
-        int skip = (page - 1) * size;
+    public List<ChatMessageReadDTO> getMessageService(String roomId) {
 
         Criteria criteria = Criteria.where("roomId").is(roomId);
 
         Query query = new Query(criteria)
-                .with(Sort.by(Sort.Order.desc("sentAt")))  // sentAt 기준 내림차순 정렬
-                .skip(skip)                               // (page - 1) * size
-                .limit(size);                             // 페이지 크기 설정
+                .with(Sort.by(Sort.Order.desc("sentAt")));  // sentAt 기준 내림차순 정렬
 
         log.info("MongoDB Query: {}", query);
 
-        List<ChatMessageReadDTO> dtoList = mongoTemplate.find(query, ChatMessageReadDTO.class, "chat_messages");
-        int totalCount = (int) mongoTemplate.count(Query.query(criteria), "chat_messages");
-
-        return new PageResponseDTO<>(dtoList, pageRequestDTO, totalCount);
+        return mongoTemplate.find(query, ChatMessageReadDTO.class, "chat_messages");
     }
 }
