@@ -1,4 +1,4 @@
-package org.gooinpro.gooinproparttimerapi.parttimer.exception;
+package org.gooinpro.gooinproparttimerapi.login.exception;
 
 import lombok.Data;
 

@@ -17,6 +17,8 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/part/api/v1/chat")
 @RequiredArgsConstructor
@@ -39,9 +41,8 @@ public class ChatMessageController {
     }
 
     @GetMapping("load/{roomId}")
-    public ResponseEntity<PageResponseDTO<ChatMessageReadDTO>> loadMessages(
-            @PathVariable String roomId, PageRequestDTO pageRequestDTO) {
+    public ResponseEntity<List<ChatMessageReadDTO>> loadMessages(@PathVariable String roomId) {
 
-        return ResponseEntity.ok(chatMessageService.getMessageService(roomId, pageRequestDTO));
+        return ResponseEntity.ok(chatMessageService.getMessageService(roomId));
     }
 }

@@ -58,37 +58,34 @@ public class JWTCheckFilter extends OncePerRequestFilter {
         String authHeader = request.getHeader("Authorization");
 
         String token = null;
-        if(authHeader != null && authHeader.startsWith("Bearer ")) {
-
+        if (authHeader != null && authHeader.startsWith("Bearer ")) {
             token = authHeader.substring(7);
-        }else {
-
+        } else {
             makeError(response, Map.of("status", 401, "msg", "No Access Token"));
-
             return;
         }
 
-        //JWT validate
-        try{
-
+        // JWT validate
+        try {
             Map<String, Object> claims = jwtUtil.validateToken(token);
             log.info(claims);
 
+            // 이메일만 추출
             String email = (String) claims.get("email");
-            String role = (String) claims.get("role");
 
+            // CustomUserPrincipal 생성 (role은 제외)
             Principal userPrincipal = new CustomUserPrincipal(email);
 
+            // role 없이 인증 토큰 생성
             UsernamePasswordAuthenticationToken authenticationToken
-                    = new UsernamePasswordAuthenticationToken(userPrincipal, null,
-                    List.of(new SimpleGrantedAuthority("ROLE_"+role)));
+                    = new UsernamePasswordAuthenticationToken(userPrincipal, null, List.of());
 
+            // SecurityContext에 인증 정보 설정
             SecurityContext context = SecurityContextHolder.getContext();
             context.setAuthentication(authenticationToken);
 
             filterChain.doFilter(request, response);
-        }catch(JwtException e){
-
+        } catch (JwtException e) {
             log.info(e.getClass().getName());
             log.info(e.getMessage());
             log.info("===================================");
@@ -96,12 +93,12 @@ public class JWTCheckFilter extends OncePerRequestFilter {
             String classFullName = e.getClass().getName();
             String shortClassName = classFullName.substring(classFullName.lastIndexOf(".") + 1);
 
-            makeError(response,
-                    Map.of("status", 401, "msg", shortClassName));
+            makeError(response, Map.of("status", 401, "msg", shortClassName));
 
             e.printStackTrace();
         }
     }
+
 
 
     private void makeError(HttpServletResponse response, Map<String, Object> map) {
