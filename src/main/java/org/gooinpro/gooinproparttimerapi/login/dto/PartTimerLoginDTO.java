@@ -5,7 +5,7 @@ import lombok.Data;
 @Data
 public class PartTimerLoginDTO {
 
-    private String pemail;  //Email
+    private String pemail;
 
-    private String pname;   //Name
+    private String pname;
 }
