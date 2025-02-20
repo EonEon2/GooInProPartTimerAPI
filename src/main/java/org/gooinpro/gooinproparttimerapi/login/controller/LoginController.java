@@ -1,15 +1,13 @@
-package org.gooinpro.gooinproparttimerapi.parttimer.controller;
-
+package org.gooinpro.gooinproparttimerapi.login.controller;
 
 import io.jsonwebtoken.ExpiredJwtException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
-import org.gooinpro.gooinproparttimerapi.parttimer.dto.PartTimerDTO;
-import org.gooinpro.gooinproparttimerapi.parttimer.dto.PartTimerRegiserDTO;
-import org.gooinpro.gooinproparttimerapi.parttimer.dto.TokenRequestDTO;
-import org.gooinpro.gooinproparttimerapi.parttimer.dto.TokenResponseDTO;
-import org.gooinpro.gooinproparttimerapi.parttimer.exception.PartTimerExceptions;
-import org.gooinpro.gooinproparttimerapi.parttimer.service.PartTimerService;
+import org.gooinpro.gooinproparttimerapi.login.dto.PartTimerDTO;
+import org.gooinpro.gooinproparttimerapi.login.dto.TokenRequestDTO;
+import org.gooinpro.gooinproparttimerapi.login.dto.TokenResponseDTO;
+import org.gooinpro.gooinproparttimerapi.login.exception.PartTimerExceptions;
+import org.gooinpro.gooinproparttimerapi.login.service.LoginService;
 import org.gooinpro.gooinproparttimerapi.security.util.JWTUtil;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.MediaType;
@@ -20,12 +18,12 @@ import org.springframework.web.bind.annotation.*;
 import java.util.Map;
 
 @RestController
-@RequestMapping("/part/api/v1/login")
 @Log4j2
 @RequiredArgsConstructor
-public class PartTimerLoginController {
+@RequestMapping("/part/api/v1/login")
+public class LoginController {
 
-    private final PartTimerService partTimerService;
+    private final LoginService loginService;
     private final JWTUtil jwtUtil;
 
     @Value("${org.gooinpro.accessTime}")
@@ -37,65 +35,50 @@ public class PartTimerLoginController {
     @Value("${org.gooinpro.alwaysNew}")
     private boolean alwaysNew;
 
-
-    @PutMapping("reg/{pno}")
-    public ResponseEntity<String> registerPartTimer(
-            @PathVariable Long pno,
-            @RequestBody PartTimerRegiserDTO partTimerRegiserDTO) {
-
-        partTimerService.registerPartTimer(pno, partTimerRegiserDTO);
-
-        return ResponseEntity.ok("partTimer Info Register Complete");
-    }
-
-
     private TokenResponseDTO generateTokenResponseDTO(PartTimerDTO partTimerDTO) {
 
-        Map<String, Object> claimMap = Map.of("email", partTimerDTO.getPemail());
+        Map<String, Object> claimMap =
+                Map.of("email", partTimerDTO.getPemail());
 
         String accessTokenStr = jwtUtil.createToken(claimMap, accessTime);
         String refreshTokenStr = jwtUtil.createToken(claimMap, refreshTime);
 
         TokenResponseDTO tokenResponseDTO = new TokenResponseDTO();
         tokenResponseDTO.setPno(partTimerDTO.getPno());
-        tokenResponseDTO.setPemail(partTimerDTO.getPemail());
         tokenResponseDTO.setPname(partTimerDTO.getPname());
         tokenResponseDTO.setAccessToken(accessTokenStr);
         tokenResponseDTO.setRefreshToken(refreshTokenStr);
+        tokenResponseDTO.setPemail(partTimerDTO.getPemail());
         tokenResponseDTO.setNew(partTimerDTO.isNew());
 
         return tokenResponseDTO;
-
     }
 
-//    @PostMapping("makeToken")
-//    public ResponseEntity<TokenResponseDTO> makeToken(
-//            @RequestBody @Validated TokenRequestDTO tokenRequestDTO) {
-//
-//        log.info("============================");
-//        log.info("makeToken");
-//
-//        PartTimerDTO partTimerDTO =
-//                partTimerService.authenticate(tokenRequestDTO.getEmail(), tokenRequestDTO.getPw());
-//
-//        log.info("partTimerDTO: " + partTimerDTO);
-//
-//        Map<String, Object> claimMap =
-//                Map.of("email", partTimerDTO.getPemail());
-//
-//        String accessToken = jwtUtil.createToken(claimMap, accessTime);
-//        String refreshToken = jwtUtil.createToken(claimMap, refreshTime);
-//
-//        TokenResponseDTO tokenResponseDTO = new TokenResponseDTO();
-//        tokenResponseDTO.setAccessToken(accessToken);
-//        tokenResponseDTO.setRefreshToken(refreshToken);
-//        tokenResponseDTO.setPemail(partTimerDTO.getPemail());
-//        tokenResponseDTO.setNew(partTimerDTO.isNew());
-//
-//        return ResponseEntity.ok(tokenResponseDTO);
-//    }
+    @PostMapping("makeToken")
+    public ResponseEntity<TokenResponseDTO> makeToken(
+            @RequestBody @Validated TokenRequestDTO tokenRequestDTO) {
 
-    // 리프레쉬 토큰
+        log.info("============================");
+        log.info("makeToken");
+
+        PartTimerDTO partTimerDTO =
+                loginService.authenticate(tokenRequestDTO.getEmail(), tokenRequestDTO.getPw());
+
+        Map<String, Object> claimMap =
+                Map.of("email", partTimerDTO.getPemail());
+
+        String accessToken = jwtUtil.createToken(claimMap, accessTime);
+        String refreshToken = jwtUtil.createToken(claimMap, refreshTime);
+
+        TokenResponseDTO tokenResponseDTO = new TokenResponseDTO();
+        tokenResponseDTO.setAccessToken(accessToken);
+        tokenResponseDTO.setRefreshToken(refreshToken);
+        tokenResponseDTO.setPemail(partTimerDTO.getPemail());
+        tokenResponseDTO.setNew(partTimerDTO.isNew());
+
+        return ResponseEntity.ok(tokenResponseDTO);
+    }
+
     @PostMapping(value = "refreshToken",
             consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE)
@@ -112,21 +95,20 @@ public class PartTimerLoginController {
 
         String accessTokenStr = accessToken.substring("Bearer ".length());
 
-        try{
+        try {
 
             Map<String, Object> payload = jwtUtil.validateToken(accessTokenStr);
 
             String email = payload.get("email").toString();
 
             TokenResponseDTO tokenResponseDTO = new TokenResponseDTO();
-            tokenResponseDTO.setPemail(email);
             tokenResponseDTO.setAccessToken(accessTokenStr);
+            tokenResponseDTO.setPemail(email);
             tokenResponseDTO.setRefreshToken(refreshToken);
             tokenResponseDTO.setNew(false);
 
             return ResponseEntity.ok(tokenResponseDTO);
-
-        } catch (ExpiredJwtException ex) {
+        } catch(ExpiredJwtException ex) {
 
             try {
 
@@ -156,35 +138,4 @@ public class PartTimerLoginController {
             }
         }
     }
-
-    @PostMapping("deleteToken")
-    public ResponseEntity<TokenResponseDTO> deleteToken(
-            @RequestParam String partTimerEmail) {
-
-        Map<String, Object> claimMap =
-                Map.of("email", partTimerEmail);
-
-        String accessToken = jwtUtil.createToken(claimMap, 0);
-        String refreshToken = jwtUtil.createToken(claimMap, 0);
-
-        TokenResponseDTO tokenResponseDTO = new TokenResponseDTO();
-        tokenResponseDTO.setAccessToken(accessToken);
-        tokenResponseDTO.setRefreshToken(refreshToken);
-        tokenResponseDTO.setPemail(partTimerEmail);
-
-        return ResponseEntity.ok(tokenResponseDTO);
-    }
-
-    @RequestMapping("kakao")
-    public ResponseEntity<TokenResponseDTO> kakaoToken(String accessToken) {
-
-        PartTimerDTO partTimerDTO = partTimerService.authKakao(accessToken);
-
-        log.info("kakao_userDTO: " + partTimerDTO);
-
-        log.info("============______________=======" + generateTokenResponseDTO(partTimerDTO));
-
-        return ResponseEntity.ok(generateTokenResponseDTO(partTimerDTO));
-    }
-
 }

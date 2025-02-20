@@ -1,4 +1,4 @@
-package org.gooinpro.gooinproparttimerapi.parttimer.dto;
+package org.gooinpro.gooinproparttimerapi.login.dto;
 
 import jakarta.validation.constraints.NotNull;
 import lombok.Data;
