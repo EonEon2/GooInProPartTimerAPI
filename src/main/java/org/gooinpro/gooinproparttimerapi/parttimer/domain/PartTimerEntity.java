@@ -28,11 +28,13 @@ public class PartTimerEntity {
     @Column(nullable = false, columnDefinition = "VARCHAR(50)")
     private String pname; // 이름
 
+    @Column(nullable = false)
     private Timestamp pbirth; // 생년월일
 
+    @Column(nullable = false)
     private boolean pgender; // 성별 true = 남 , false = 여
 
-    @Column(nullable = false, columnDefinition = "BOOLEAN DEFAULT FALSE")
+    @Column(columnDefinition = "BOOLEAN DEFAULT FALSE")
     private boolean pdelete; // 삭제여부
 
     @Column(nullable = false, columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP")

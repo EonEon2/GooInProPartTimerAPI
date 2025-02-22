@@ -20,6 +20,8 @@ public class LoginService {
 
     private final PartTimerRepository partTimerRepository;
 
+    //수정 필요******************
+    //새로운 PartTimer 등록
     private PartTimerDTO partTimerRegisterService(PartTimerLoginDTO partTimerLoginDTO) {
 
         String pw = UUID.randomUUID().toString();
@@ -73,6 +75,8 @@ public class LoginService {
                     .build();
         }
 
-        return partTimerRegisterService(partTimerLoginDTO);
+        return PartTimerDTO.builder()
+                .isNew(true)
+                .build();
     }
 }
