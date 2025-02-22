@@ -5,6 +5,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.gooinpro.gooinproparttimerapi.login.dto.PartTimerDTO;
 import org.gooinpro.gooinproparttimerapi.login.dto.PartTimerLoginDTO;
+import org.gooinpro.gooinproparttimerapi.login.dto.PartTimerRegisterDTO;
 import org.gooinpro.gooinproparttimerapi.login.dto.TokenResponseDTO;
 import org.gooinpro.gooinproparttimerapi.login.exception.PartTimerExceptions;
 import org.gooinpro.gooinproparttimerapi.login.service.LoginService;
@@ -149,5 +150,12 @@ public class LoginController {
                             .isNew(true).build());
 
         return ResponseEntity.ok(generateTokenResponseDTO(partTimerDTO));
+    }
+
+    @PostMapping("register")
+    public ResponseEntity<TokenResponseDTO> register(@RequestBody PartTimerRegisterDTO partTimerRegisterDTO) {
+
+        return ResponseEntity.ok(
+                generateTokenResponseDTO(loginService.partTimerRegisterService(partTimerRegisterDTO)));
     }
 }

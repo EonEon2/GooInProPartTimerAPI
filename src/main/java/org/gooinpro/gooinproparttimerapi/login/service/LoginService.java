@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.gooinpro.gooinproparttimerapi.login.dto.PartTimerDTO;
 import org.gooinpro.gooinproparttimerapi.login.dto.PartTimerLoginDTO;
+import org.gooinpro.gooinproparttimerapi.login.dto.PartTimerRegisterDTO;
 import org.gooinpro.gooinproparttimerapi.parttimer.domain.PartTimerEntity;
 import org.gooinpro.gooinproparttimerapi.parttimer.repository.PartTimerRepository;
 import org.springframework.stereotype.Service;
@@ -20,25 +21,28 @@ public class LoginService {
 
     private final PartTimerRepository partTimerRepository;
 
-    //수정 필요******************
     //새로운 PartTimer 등록
-    private PartTimerDTO partTimerRegisterService(PartTimerLoginDTO partTimerLoginDTO) {
+    public PartTimerDTO partTimerRegisterService(PartTimerRegisterDTO partTimerRegisterDTO) {
 
         String pw = UUID.randomUUID().toString();
 
-        PartTimerEntity partTimerEntity = PartTimerEntity.builder()
-                .pemail(partTimerLoginDTO.getPemail())
-                .pname(partTimerLoginDTO.getPname())
+        PartTimerEntity partTimer = PartTimerEntity.builder()
+                .pemail(partTimerRegisterDTO.getPemail())
                 .ppw(pw)
+                .pname(partTimerRegisterDTO.getPname())
+                .pbirth(partTimerRegisterDTO.getPbirth())
+                .pgender(partTimerRegisterDTO.isPgender())
+                .proadAddress(partTimerRegisterDTO.getProadAddress())
+                .pdetailAddress(partTimerRegisterDTO.getPdetailAddress())
                 .build();
 
-        PartTimerEntity result = partTimerRepository.save(partTimerEntity);
+        PartTimerEntity saved = partTimerRepository.save(partTimer);
 
         return PartTimerDTO.builder()
-                .pno(result.getPno())
-                .pemail(result.getPemail())
-                .pname(result.getPname())
-                .isNew(true)
+                .pno(saved.getPno())
+                .pemail(saved.getPemail())
+                .pname(saved.getPname())
+                .isNew(false)
                 .build();
     }
 
