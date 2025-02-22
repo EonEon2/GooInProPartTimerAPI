@@ -1,8 +1,10 @@
 package org.gooinpro.gooinproparttimerapi.login.dto;
 
+import lombok.Builder;
 import lombok.Data;
 
 @Data
+@Builder
 public class TokenResponseDTO {
 
     private Long pno;

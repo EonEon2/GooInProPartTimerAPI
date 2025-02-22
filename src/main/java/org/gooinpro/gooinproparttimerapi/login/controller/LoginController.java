@@ -5,6 +5,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.gooinpro.gooinproparttimerapi.login.dto.PartTimerDTO;
 import org.gooinpro.gooinproparttimerapi.login.dto.PartTimerLoginDTO;
+import org.gooinpro.gooinproparttimerapi.login.dto.PartTimerRegisterDTO;
 import org.gooinpro.gooinproparttimerapi.login.dto.TokenResponseDTO;
 import org.gooinpro.gooinproparttimerapi.login.exception.PartTimerExceptions;
 import org.gooinpro.gooinproparttimerapi.login.service.LoginService;
@@ -42,15 +43,14 @@ public class LoginController {
         String accessTokenStr = jwtUtil.createToken(claimMap, accessTime);
         String refreshTokenStr = jwtUtil.createToken(claimMap, refreshTime);
 
-        TokenResponseDTO tokenResponseDTO = new TokenResponseDTO();
-        tokenResponseDTO.setPno(partTimerDTO.getPno());
-        tokenResponseDTO.setPname(partTimerDTO.getPname());
-        tokenResponseDTO.setAccessToken(accessTokenStr);
-        tokenResponseDTO.setRefreshToken(refreshTokenStr);
-        tokenResponseDTO.setPemail(partTimerDTO.getPemail());
-        tokenResponseDTO.setNew(partTimerDTO.isNew());
-
-        return tokenResponseDTO;
+        return TokenResponseDTO.builder()
+                .pno(partTimerDTO.getPno())
+                .pname(partTimerDTO.getPname())
+                .accessToken(accessTokenStr)
+                .refreshToken(refreshTokenStr)
+                .pemail(partTimerDTO.getPemail())
+                .isNew(partTimerDTO.isNew())
+                .build();
     }
 
 //    @PostMapping("makeToken")
@@ -100,11 +100,12 @@ public class LoginController {
 
             String email = payload.get("email").toString();
 
-            TokenResponseDTO tokenResponseDTO = new TokenResponseDTO();
-            tokenResponseDTO.setAccessToken(accessTokenStr);
-            tokenResponseDTO.setPemail(email);
-            tokenResponseDTO.setRefreshToken(refreshToken);
-            tokenResponseDTO.setNew(false);
+            TokenResponseDTO tokenResponseDTO = TokenResponseDTO.builder()
+                    .accessToken(accessTokenStr)
+                    .refreshToken(refreshToken)
+                    .pemail(email)
+                    .isNew(false)
+                    .build();
 
             return ResponseEntity.ok(tokenResponseDTO);
         } catch(ExpiredJwtException ex) {
@@ -124,11 +125,12 @@ public class LoginController {
                     newRefreshToken = jwtUtil.createToken(claimMap, refreshTime);
                 }
 
-                TokenResponseDTO tokenResponseDTO = new TokenResponseDTO();
-                tokenResponseDTO.setAccessToken(newAccessToken);
-                tokenResponseDTO.setRefreshToken(newRefreshToken);
-                tokenResponseDTO.setPemail(email);
-                tokenResponseDTO.setNew(false);
+                TokenResponseDTO tokenResponseDTO = TokenResponseDTO.builder()
+                        .accessToken(newAccessToken)
+                        .refreshToken(newRefreshToken)
+                        .pemail(email)
+                        .isNew(false)
+                        .build();
 
                 return ResponseEntity.ok(tokenResponseDTO);
             } catch (ExpiredJwtException ex2) {
@@ -138,11 +140,22 @@ public class LoginController {
         }
     }
 
-    @PostMapping("find")
+    @GetMapping("find")
     public ResponseEntity<TokenResponseDTO> find(@RequestBody PartTimerLoginDTO partTimerLoginDTO) {
 
         PartTimerDTO partTimerDTO = loginService.findPartTimerService(partTimerLoginDTO);
 
+        if(partTimerDTO.isNew())
+            return ResponseEntity.ok(TokenResponseDTO.builder()
+                            .isNew(true).build());
+
         return ResponseEntity.ok(generateTokenResponseDTO(partTimerDTO));
+    }
+
+    @PostMapping("register")
+    public ResponseEntity<TokenResponseDTO> register(@RequestBody PartTimerRegisterDTO partTimerRegisterDTO) {
+
+        return ResponseEntity.ok(
+                generateTokenResponseDTO(loginService.partTimerRegisterService(partTimerRegisterDTO)));
     }
 }
