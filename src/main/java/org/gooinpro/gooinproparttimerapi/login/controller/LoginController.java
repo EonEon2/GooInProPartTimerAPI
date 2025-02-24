@@ -140,10 +140,10 @@ public class LoginController {
         }
     }
 
-    @GetMapping("find")
-    public ResponseEntity<TokenResponseDTO> find(@RequestBody PartTimerLoginDTO partTimerLoginDTO) {
+    @GetMapping("find/{pemail}") // pathvariable
+    public ResponseEntity<TokenResponseDTO> find(@PathVariable String pemail) {
 
-        PartTimerDTO partTimerDTO = loginService.findPartTimerService(partTimerLoginDTO);
+        PartTimerDTO partTimerDTO = loginService.findPartTimerService(pemail);
 
         if(partTimerDTO.isNew())
             return ResponseEntity.ok(TokenResponseDTO.builder()

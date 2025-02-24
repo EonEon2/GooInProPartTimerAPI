@@ -65,9 +65,11 @@ public class LoginService {
 //        return partTimerDTO;
 //    }
 
-    public PartTimerDTO findPartTimerService(PartTimerLoginDTO partTimerLoginDTO) {
+    public PartTimerDTO findPartTimerService(String pemail) {
 
-        Optional<PartTimerEntity> result = partTimerRepository.findByPemail(partTimerLoginDTO.getPemail());
+        log.info("find--------------------");
+
+        Optional<PartTimerEntity> result = partTimerRepository.findByPemail(pemail);
 
         if(result.isPresent()) {
 
