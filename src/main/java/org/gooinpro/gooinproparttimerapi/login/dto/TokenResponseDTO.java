@@ -17,6 +17,6 @@ public class TokenResponseDTO {
 
     private String refreshToken;
 
-    private boolean isNew;
+    private boolean newUser;
 
 }
