@@ -2,12 +2,25 @@ package org.gooinpro.gooinproparttimerapi.worklogs.repository.search;
 
 import com.querydsl.core.types.Projections;
 import com.querydsl.jpa.JPQLQuery;
+import lombok.extern.log4j.Log4j2;
+import org.gooinpro.gooinproparttimerapi.jobmatchings.domain.JobMatchingsEntity;
+import org.gooinpro.gooinproparttimerapi.jobmatchings.domain.QJobMatchingsEntity;
+import org.gooinpro.gooinproparttimerapi.jobmatchings.repository.JobMatchingsRepository;
+import org.gooinpro.gooinproparttimerapi.parttimer.domain.PartTimerEntity;
+import org.gooinpro.gooinproparttimerapi.parttimer.repository.PartTimerRepository;
 import org.gooinpro.gooinproparttimerapi.worklogs.domain.QWorkLogsEntity;
 import org.gooinpro.gooinproparttimerapi.worklogs.domain.WorkLogsEntity;
 import org.gooinpro.gooinproparttimerapi.worklogs.dto.WorkLogsDTO;
+import org.gooinpro.gooinproparttimerapi.worklogs.dto.WorkLogsTimeDTO;
+import org.gooinpro.gooinproparttimerapi.worklogs.repository.WorkLogsRepository;
+import org.gooinpro.gooinproparttimerapi.worklogs.service.WorkLogsService;
 import org.springframework.data.jpa.repository.support.QuerydslRepositorySupport;
-import java.util.List;
 
+import java.sql.Timestamp;
+import java.util.List;
+import java.util.Optional;
+
+@Log4j2
 public class WorkLogsSearchImpl extends QuerydslRepositorySupport implements WorkLogsSearch {
 
     public WorkLogsSearchImpl() {
@@ -25,7 +38,6 @@ public class WorkLogsSearchImpl extends QuerydslRepositorySupport implements Wor
                         workLogs.wlstartTime,
                         workLogs.wlendTime,
                         workLogs.wlworkStatus,
-                        workLogs.wlregdate,
                         workLogs.wlchangedStartTime,
                         workLogs.wlchangedEndTime,
                         workLogs.wldelete,
@@ -57,7 +69,6 @@ public class WorkLogsSearchImpl extends QuerydslRepositorySupport implements Wor
                         workLogs.wlstartTime,
                         workLogs.wlendTime,
                         workLogs.wlworkStatus,
-                        workLogs.wlregdate,
                         workLogs.wlchangedStartTime,
                         workLogs.wlchangedEndTime,
                         workLogs.wldelete,
@@ -70,4 +81,5 @@ public class WorkLogsSearchImpl extends QuerydslRepositorySupport implements Wor
                         .and(workLogs.wldelete.eq(false)))
                 .fetch();
     }
+
 }

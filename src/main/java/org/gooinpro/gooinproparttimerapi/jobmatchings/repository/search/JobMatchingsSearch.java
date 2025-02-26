@@ -20,4 +20,6 @@ public interface JobMatchingsSearch {
     JobMatchingsTimeDTO getWorkplaceTimes(Long pno, Long jpno);
 
     PageResponseDTO<JobMatchingsWorkListDTO> getWorkPlaceList(PageRequestDTO pageRequestDTO, Long pno);
+
+
 }
