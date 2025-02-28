@@ -25,7 +25,7 @@ public class WorkLogsController {
         return ResponseEntity.ok(workLogsService.startTime(workLogsTimeDTO));
     }
 
-    @PostMapping("/end")
+    @PutMapping("/end")
     public ResponseEntity<WorkLogsOutDTO> endTime(@RequestBody WorkLogsTimeDTO workLogsTimeDTO) {
         log.info(" worklog end");
 

@@ -129,8 +129,8 @@ public class JobMatchingsSearchImpl extends QuerydslRepositorySupport implements
                         jobMatching.pno.pno,
                         jobMatching.jpno.jpno,
                         jobMatching.jpno.jpname,
-                        jobMatching.jpno.jpworkDays,
-                        jobMatching.jmdelete)
+                        jobMatching.jpno.jpworkDays
+                )
         );
 
         List<JobMatchingsWorkListDTO> dtoList = tupleQuery.fetch();

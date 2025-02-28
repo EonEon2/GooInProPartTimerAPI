@@ -15,5 +15,4 @@ public class JobMatchingsWorkListDTO {
 
     private String jpworkDays;
 
-    private boolean jmdelete;
 }

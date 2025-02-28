@@ -16,11 +16,12 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.sql.Timestamp;
+import java.time.LocalTime;
 
 @Service
 @RequiredArgsConstructor
 @Log4j2
-@Transactional(readOnly = true)
+@Transactional
 public class WorkLogsService {
 
     private final WorkLogsRepository workLogsRepository;
@@ -29,15 +30,24 @@ public class WorkLogsService {
 
     public WorkLogsInDTO startTime(WorkLogsTimeDTO workLogsTimeDTO) {
 
+        log.info(workLogsTimeDTO.getPno());
+        log.info(workLogsTimeDTO.getJmno());
+
         PartTimerEntity partTimer = partTimerRepository.findById(workLogsTimeDTO.getPno()).orElseThrow();
         JobMatchingsEntity jobMatchings = jobMatchingsRepository.findById(workLogsTimeDTO.getJmno()).orElseThrow();
 
         Integer workStatus = 0;
 
         Timestamp timenow = new Timestamp(System.currentTimeMillis());
-        Timestamp timerule = jobMatchings.getJmworkStartTime();
+        LocalTime changeTimenow = timenow.toLocalDateTime().toLocalTime();
 
-        if(timenow.after(timerule)) workStatus = 1;
+        Timestamp timerule = jobMatchings.getJmworkStartTime();
+        LocalTime changeTimeRule = timerule.toLocalDateTime().toLocalTime();
+
+        log.info(changeTimenow);
+        log.info(changeTimeRule);
+
+        if(changeTimenow.isAfter(changeTimeRule)) workStatus = 1;
 
         WorkLogsEntity workLogsEntity = new WorkLogsEntity();
         workLogsEntity.setPno(partTimer);
@@ -57,27 +67,38 @@ public class WorkLogsService {
 
         PartTimerEntity partTimer = partTimerRepository.findById(workLogsTimeDTO.getPno()).orElseThrow();
         JobMatchingsEntity jobMatchings = jobMatchingsRepository.findById(workLogsTimeDTO.getJmno()).orElseThrow();
+        WorkLogsEntity workLogs = workLogsRepository.findTodayWorkLogByPno(partTimer).orElseThrow();
 
-        Integer workStatus = 0;  // 0:정상,1:지각,2:조퇴,3:결근
+        Integer workStatus = workLogs.getWlworkStatus();  // 0:정상,1:지각,2:조퇴,3:결근,4:지각조퇴
+
+        log.info(workLogs.getWlno());
+        log.info("----------------------------------");
+        log.info(workStatus);
 
         Timestamp timenow = new Timestamp(System.currentTimeMillis());
+        LocalTime changeTimenow = timenow.toLocalDateTime().toLocalTime();
+
         Timestamp timerule = jobMatchings.getJmworkEndTime();
+        LocalTime changeTimeRule = timerule.toLocalDateTime().toLocalTime();
 
-        if(timenow.before(timerule)) workStatus = 2;
+        if(changeTimenow.isBefore(changeTimeRule)) {
+            if(workStatus.equals(1)) {
+                workStatus = 4;
+            } else{
+                workStatus = 2;
+            }
+        }
 
-        WorkLogsEntity workLogsEntity = new WorkLogsEntity();
-        workLogsEntity.setPno(partTimer);
-        workLogsEntity.setJobMatching(jobMatchings);
-        workLogsEntity.setWlendTime(timenow);
-        workLogsEntity.setWlworkStatus(workStatus);
+        workLogs.setWlendTime(timenow);
+        workLogs.setWlworkStatus(workStatus);
 
-        workLogsRepository.save(workLogsEntity);
+        workLogsRepository.save(workLogs);
+
+        log.info(workLogs);
 
         return WorkLogsOutDTO.builder()
                 .wlendTime(timenow)
                 .wlworkStatus(workStatus)
                 .build();
-
-
     }
 }
