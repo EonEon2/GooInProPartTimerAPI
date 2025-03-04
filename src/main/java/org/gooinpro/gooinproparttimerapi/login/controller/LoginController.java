@@ -4,7 +4,6 @@ import io.jsonwebtoken.ExpiredJwtException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.gooinpro.gooinproparttimerapi.login.dto.PartTimerDTO;
-import org.gooinpro.gooinproparttimerapi.login.dto.PartTimerLoginDTO;
 import org.gooinpro.gooinproparttimerapi.login.dto.PartTimerRegisterDTO;
 import org.gooinpro.gooinproparttimerapi.login.dto.TokenResponseDTO;
 import org.gooinpro.gooinproparttimerapi.login.exception.PartTimerExceptions;
@@ -49,7 +48,7 @@ public class LoginController {
                 .accessToken(accessTokenStr)
                 .refreshToken(refreshTokenStr)
                 .pemail(partTimerDTO.getPemail())
-                .isNew(partTimerDTO.isNew())
+                .newUser(partTimerDTO.isNewUser())
                 .build();
     }
 
@@ -104,7 +103,7 @@ public class LoginController {
                     .accessToken(accessTokenStr)
                     .refreshToken(refreshToken)
                     .pemail(email)
-                    .isNew(false)
+                    .newUser(false)
                     .build();
 
             return ResponseEntity.ok(tokenResponseDTO);
@@ -129,7 +128,7 @@ public class LoginController {
                         .accessToken(newAccessToken)
                         .refreshToken(newRefreshToken)
                         .pemail(email)
-                        .isNew(false)
+                        .newUser(false)
                         .build();
 
                 return ResponseEntity.ok(tokenResponseDTO);
@@ -140,14 +139,14 @@ public class LoginController {
         }
     }
 
-    @GetMapping("find")
-    public ResponseEntity<TokenResponseDTO> find(@RequestBody PartTimerLoginDTO partTimerLoginDTO) {
+    @GetMapping("find/{pemail}") // pathvariable
+    public ResponseEntity<TokenResponseDTO> find(@PathVariable String pemail) {
 
-        PartTimerDTO partTimerDTO = loginService.findPartTimerService(partTimerLoginDTO);
+        PartTimerDTO partTimerDTO = loginService.findPartTimerService(pemail);
 
-        if(partTimerDTO.isNew())
+        if(partTimerDTO.isNewUser())
             return ResponseEntity.ok(TokenResponseDTO.builder()
-                            .isNew(true).build());
+                            .newUser(true).build());
 
         return ResponseEntity.ok(generateTokenResponseDTO(partTimerDTO));
     }

@@ -5,6 +5,7 @@ import lombok.Getter;
 import lombok.Setter;
 import org.gooinpro.gooinproparttimerapi.employer.domain.EmployerEntity;
 import org.gooinpro.gooinproparttimerapi.jobmatchings.domain.JobMatchingsEntity;
+import org.gooinpro.gooinproparttimerapi.jobpostings.domain.JobPostingsEntity;
 import org.gooinpro.gooinproparttimerapi.parttimer.domain.PartTimerEntity;
 
 import java.sql.Time;
@@ -24,18 +25,15 @@ public class WorkLogsEntity {
     @JoinColumn(name = "jmno")
     private JobMatchingsEntity jobMatching;
 
-    private Timestamp wlstartTime;
+    private Timestamp wlstartTime; // 출근시간
 
-    private Timestamp wlendTime;
+    private Timestamp wlendTime; // 퇴근시간
 
     private Integer wlworkStatus; // 0:정상,1:지각,2:조퇴,3:결근
 
-    @Column(nullable = false)
-    private Timestamp wlregdate;
+    private Time wlchangedStartTime; // 변경 출근
 
-    private Time wlchangedStartTime;
-
-    private Time wlchangedEndTime;
+    private Time wlchangedEndTime; // 변경 퇴근
 
     @Column(nullable = false)
     private boolean wldelete;

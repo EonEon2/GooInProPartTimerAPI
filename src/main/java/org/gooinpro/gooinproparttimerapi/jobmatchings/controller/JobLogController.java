@@ -2,7 +2,11 @@ package org.gooinpro.gooinproparttimerapi.jobmatchings.controller;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
+import org.gooinpro.gooinproparttimerapi.common.dto.PageRequestDTO;
+import org.gooinpro.gooinproparttimerapi.common.dto.PageResponseDTO;
 import org.gooinpro.gooinproparttimerapi.jobmatchings.dto.JobMatchingsListDTO;
+import org.gooinpro.gooinproparttimerapi.jobmatchings.dto.JobMatchingsTimeDTO;
+import org.gooinpro.gooinproparttimerapi.jobmatchings.dto.JobMatchingsWorkListDTO;
 import org.gooinpro.gooinproparttimerapi.jobmatchings.service.JobMatchingsLogService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -31,11 +35,22 @@ public class JobLogController {
         return ResponseEntity.ok(jobMatchingsLogService.getPastWorkplaces(pno));
     }
 
+<<<<<<< HEAD
     // 근무지 상세 정보 조회
     @GetMapping("/detail")
     public ResponseEntity<JobMatchingsListDTO> getJobsDetail(@RequestParam Long jmno) {
         log.info("근무지 상세 정보 조회 controller for jmno: {}", jmno);
         return ResponseEntity.ok(jobMatchingsLogService.getJobsDetail(jmno));
+=======
+    @GetMapping("/time")
+    public ResponseEntity<JobMatchingsTimeDTO> getWorkplaceTimes(@RequestParam Long pno, @RequestParam Long jpno) {
+        return ResponseEntity.ok(jobMatchingsLogService.getWorkplaceTimes(pno, jpno));
+    }
+
+    @GetMapping("/workList")
+    public ResponseEntity<PageResponseDTO<JobMatchingsWorkListDTO>> getWorkPlaceList(PageRequestDTO pageRequestDTO, @RequestParam Long pno) {
+        return ResponseEntity.ok(jobMatchingsLogService.getWorkPlaceList(pageRequestDTO, pno));
+>>>>>>> ef4e30c2f2750be133c2bd3686a986f5e37912b2
     }
 
 }
