@@ -16,4 +16,5 @@ public interface PartTimerRepository extends JpaRepository<PartTimerEntity, Long
     Optional<PartTimerEntity> findByPnoAndPdeleteIsFalse(Long pno);
 
     Long pno(Long pno);
+
 }
