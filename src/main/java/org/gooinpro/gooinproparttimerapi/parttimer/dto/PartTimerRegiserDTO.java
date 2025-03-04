@@ -6,7 +6,8 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import java.sql.Timestamp;
+
+import java.sql.Date;
 
 @Data
 @Builder
@@ -17,7 +18,7 @@ public class PartTimerRegiserDTO {
     private String pname;
 
     @NotNull(message = "생년월일은 필수 입력 항목입니다.")
-    private Timestamp pbirth;
+    private Date pbirth;
 
     @NotNull(message = "성별은 필수 입력 항목입니다.")
     private boolean pgender;
