@@ -3,7 +3,6 @@ package org.gooinpro.gooinproparttimerapi.login.service;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.gooinpro.gooinproparttimerapi.login.dto.PartTimerDTO;
-import org.gooinpro.gooinproparttimerapi.login.dto.PartTimerLoginDTO;
 import org.gooinpro.gooinproparttimerapi.login.dto.PartTimerRegisterDTO;
 import org.gooinpro.gooinproparttimerapi.parttimer.domain.PartTimerEntity;
 import org.gooinpro.gooinproparttimerapi.parttimer.repository.PartTimerRepository;
@@ -42,7 +41,7 @@ public class LoginService {
                 .pno(saved.getPno())
                 .pemail(saved.getPemail())
                 .pname(saved.getPname())
-                .isNew(false)
+                .newUser(false)
                 .build();
     }
 
@@ -65,9 +64,11 @@ public class LoginService {
 //        return partTimerDTO;
 //    }
 
-    public PartTimerDTO findPartTimerService(PartTimerLoginDTO partTimerLoginDTO) {
+    public PartTimerDTO findPartTimerService(String pemail) {
 
-        Optional<PartTimerEntity> result = partTimerRepository.findByPemail(partTimerLoginDTO.getPemail());
+        log.info("find--------------------");
+
+        Optional<PartTimerEntity> result = partTimerRepository.findByPemail(pemail);
 
         if(result.isPresent()) {
 
@@ -75,12 +76,12 @@ public class LoginService {
                     .pno(result.get().getPno())
                     .pemail(result.get().getPemail())
                     .pname(result.get().getPname())
-                    .isNew(false)
+                    .newUser(false)
                     .build();
         }
 
         return PartTimerDTO.builder()
-                .isNew(true)
+                .newUser(true)
                 .build();
     }
 }

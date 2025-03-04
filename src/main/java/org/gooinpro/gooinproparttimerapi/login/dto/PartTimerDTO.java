@@ -3,8 +3,6 @@ package org.gooinpro.gooinproparttimerapi.login.dto;
 import lombok.Builder;
 import lombok.Data;
 
-import java.sql.Timestamp;
-
 @Data
 @Builder
 public class PartTimerDTO {
@@ -15,5 +13,5 @@ public class PartTimerDTO {
 
     private String pname; // 이름
 
-    private boolean isNew;  //새로운 사용자 Flag
+    private boolean newUser;  //새로운 사용자 Flag
 }
