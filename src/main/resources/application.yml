@@ -6,9 +6,6 @@ spring:
     url: jdbc:mariadb://localhost:13307/gooinprodb
     username: gooinprodbuser
     password: gooinprodbuser
-  data:
-    mongodb:
-      uri: mongodb://gooinprochatdbuser:gooinprochatdbuser@localhost:27017/gooinprochatdb?authSource=gooinprochatdb
 
     hikari:
       minimum-idle: 2
