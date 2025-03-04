@@ -20,4 +20,7 @@ public class JobMatchingsListDTO {
     private String jmworkDays;
     private Timestamp jmworkStartTime;
     private Timestamp jmworkEndTime;
+
+    private String wroadAddress;
+    private String wdetailAddress;
 }
