@@ -1,6 +1,9 @@
 package org.gooinpro.gooinproparttimerapi.worklogs.repository.search;
 
 import com.querydsl.core.types.Projections;
+import com.querydsl.core.types.dsl.DateTemplate;
+import com.querydsl.core.types.dsl.Expressions;
+import com.querydsl.core.types.dsl.StringTemplate;
 import com.querydsl.jpa.JPQLQuery;
 import lombok.extern.log4j.Log4j2;
 import org.gooinpro.gooinproparttimerapi.jobmatchings.domain.JobMatchingsEntity;
@@ -11,21 +14,26 @@ import org.gooinpro.gooinproparttimerapi.parttimer.repository.PartTimerRepositor
 import org.gooinpro.gooinproparttimerapi.worklogs.domain.QWorkLogsEntity;
 import org.gooinpro.gooinproparttimerapi.worklogs.domain.WorkLogsEntity;
 import org.gooinpro.gooinproparttimerapi.worklogs.dto.WorkLogsDTO;
+import org.gooinpro.gooinproparttimerapi.worklogs.dto.WorkLogsInOutDTO;
 import org.gooinpro.gooinproparttimerapi.worklogs.dto.WorkLogsTimeDTO;
 import org.gooinpro.gooinproparttimerapi.worklogs.repository.WorkLogsRepository;
 import org.gooinpro.gooinproparttimerapi.worklogs.service.WorkLogsService;
 import org.springframework.data.jpa.repository.support.QuerydslRepositorySupport;
 
+import java.sql.Time;
 import java.sql.Timestamp;
+import java.text.SimpleDateFormat;
 import java.util.List;
 import java.util.Optional;
 
 @Log4j2
 public class WorkLogsSearchImpl extends QuerydslRepositorySupport implements WorkLogsSearch {
 
+
     public WorkLogsSearchImpl() {
         super(WorkLogsEntity.class);
     }
+
 
     @Override
     public List<WorkLogsDTO> getMonthlyWorkLogs(Long pno, Integer year, Integer month) {

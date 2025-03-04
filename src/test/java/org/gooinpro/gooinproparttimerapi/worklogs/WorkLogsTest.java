@@ -11,6 +11,9 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.annotation.Commit;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.sql.Timestamp;
+import java.util.Optional;
+
 @SpringBootTest
 @Log4j2
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE) // db로 테스트?
@@ -20,12 +23,18 @@ public class WorkLogsTest {
     private WorkLogsRepository workLogsRepository;
 
 
-//    @Test
-//    @Transactional
-//    @Commit
-//    public void testWorkLogs() {
-//        Long pno = 17L;
-//        Long jpno = 11L;
-//        workLogsRepository.startendTime(pno, jpno);
-//    }
+    @Test
+    @Transactional
+    @Commit
+    public void testWorkLogs() {
+        Long pno = 17L;
+        Long jmno = 1L;
+
+        Optional<Timestamp> result = workLogsRepository.findTodayStartByPnoAndJmno(pno, jmno);
+
+        log.info("----------");
+        log.info(result);
+
+
+    }
 }

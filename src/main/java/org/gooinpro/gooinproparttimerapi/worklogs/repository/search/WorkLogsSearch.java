@@ -1,6 +1,7 @@
 package org.gooinpro.gooinproparttimerapi.worklogs.repository.search;
 
 import org.gooinpro.gooinproparttimerapi.worklogs.dto.WorkLogsDTO;
+import org.gooinpro.gooinproparttimerapi.worklogs.dto.WorkLogsInOutDTO;
 import org.gooinpro.gooinproparttimerapi.worklogs.dto.WorkLogsTimeDTO;
 
 import java.util.List;
@@ -11,5 +12,6 @@ public interface WorkLogsSearch {
 
     // 파트타이머의 근무 기록 조회 (근무지별)
     List<WorkLogsDTO> getWorkLogsByJob(Long pno, Long jmno);
+
 
 }
