@@ -17,14 +17,11 @@ public interface JobMatchingsSearch {
     // 이전 근무지
     List<JobMatchingsListDTO> getPastWorkplaces(Long pno);
 
-<<<<<<< HEAD
     // 근무지 상세 정보 조회
     JobMatchingsListDTO getJobsDetail(Long jmno);
-=======
+
     JobMatchingsTimeDTO getWorkplaceTimes(Long pno, Long jpno);
 
     PageResponseDTO<JobMatchingsWorkListDTO> getWorkPlaceList(PageRequestDTO pageRequestDTO, Long pno);
 
-
->>>>>>> ef4e30c2f2750be133c2bd3686a986f5e37912b2
 }

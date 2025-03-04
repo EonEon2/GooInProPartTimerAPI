@@ -35,13 +35,13 @@ public class JobLogController {
         return ResponseEntity.ok(jobMatchingsLogService.getPastWorkplaces(pno));
     }
 
-<<<<<<< HEAD
     // 근무지 상세 정보 조회
     @GetMapping("/detail")
     public ResponseEntity<JobMatchingsListDTO> getJobsDetail(@RequestParam Long jmno) {
         log.info("근무지 상세 정보 조회 controller for jmno: {}", jmno);
         return ResponseEntity.ok(jobMatchingsLogService.getJobsDetail(jmno));
-=======
+    }
+
     @GetMapping("/time")
     public ResponseEntity<JobMatchingsTimeDTO> getWorkplaceTimes(@RequestParam Long pno, @RequestParam Long jpno) {
         return ResponseEntity.ok(jobMatchingsLogService.getWorkplaceTimes(pno, jpno));
@@ -50,7 +50,6 @@ public class JobLogController {
     @GetMapping("/workList")
     public ResponseEntity<PageResponseDTO<JobMatchingsWorkListDTO>> getWorkPlaceList(PageRequestDTO pageRequestDTO, @RequestParam Long pno) {
         return ResponseEntity.ok(jobMatchingsLogService.getWorkPlaceList(pageRequestDTO, pno));
->>>>>>> ef4e30c2f2750be133c2bd3686a986f5e37912b2
     }
 
 }

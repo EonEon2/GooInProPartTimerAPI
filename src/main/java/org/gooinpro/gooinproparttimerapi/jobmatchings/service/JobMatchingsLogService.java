@@ -30,14 +30,12 @@ public class JobMatchingsLogService {
         return jobMatchingsRepository.getPastWorkplaces(pno);
     }
 
-<<<<<<< HEAD
     // 근무지 상세 정보 조회
     public JobMatchingsListDTO getJobsDetail(Long jmno) {
         log.info("근무지 상세 정보 service for jmno: {}", jmno);
         return jobMatchingsRepository.getJobsDetail(jmno);
     }
 
-=======
     public JobMatchingsTimeDTO getWorkplaceTimes(Long pno, Long jpno) {
         return jobMatchingsRepository.getWorkplaceTimes(pno, jpno);
     }
@@ -45,5 +43,4 @@ public class JobMatchingsLogService {
     public PageResponseDTO<JobMatchingsWorkListDTO> getWorkPlaceList(PageRequestDTO pageRequestDTO, Long pno) {
         return jobMatchingsRepository.getWorkPlaceList(pageRequestDTO, pno);
     }
->>>>>>> ef4e30c2f2750be133c2bd3686a986f5e37912b2
 }

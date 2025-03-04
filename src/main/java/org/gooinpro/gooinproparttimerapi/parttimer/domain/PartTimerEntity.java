@@ -31,7 +31,7 @@ public class PartTimerEntity {
     private String pname; // 이름
 
     @Column(nullable = false)
-    private Timestamp pbirth; // 생년월일
+    private Date pbirth; // 생년월일
 
     @Column(nullable = false)
     private boolean pgender; // 성별 true = 남 , false = 여

@@ -1,12 +1,10 @@
 package org.gooinpro.gooinproparttimerapi.jobmatchings.repository.search;
 
-<<<<<<< HEAD
 import lombok.extern.log4j.Log4j2;
 import org.gooinpro.gooinproparttimerapi.jobmatchings.domain.JobMatchingsEntity;
 import org.gooinpro.gooinproparttimerapi.jobmatchings.domain.QJobMatchingsEntity;
 import org.gooinpro.gooinproparttimerapi.jobmatchings.dto.JobMatchingsListDTO;
 import org.gooinpro.gooinproparttimerapi.workplace.domain.WorkPlaceEntity;
-=======
 import com.querydsl.core.types.Projections;
 import com.querydsl.jpa.JPQLQuery;
 import org.gooinpro.gooinproparttimerapi.common.dto.PageRequestDTO;
@@ -23,7 +21,6 @@ import org.gooinpro.gooinproparttimerapi.parttimer.domain.QPartTimerEntity;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
->>>>>>> ef4e30c2f2750be133c2bd3686a986f5e37912b2
 import org.springframework.data.jpa.repository.support.QuerydslRepositorySupport;
 import org.springframework.security.access.method.P;
 
@@ -124,7 +121,6 @@ public class JobMatchingsSearchImpl extends QuerydslRepositorySupport implements
     }
 
     @Override
-<<<<<<< HEAD
     public JobMatchingsListDTO getJobsDetail(Long jmno) {
         QJobMatchingsEntity jobMatching = QJobMatchingsEntity.jobMatchingsEntity;
 
@@ -161,7 +157,9 @@ public class JobMatchingsSearchImpl extends QuerydslRepositorySupport implements
                 .jmworkEndTime(entity.getJmworkEndTime())
                 .wroadAddress(roadAddress)
                 .wdetailAddress(detailAddress)
-=======
+                .build();
+    }
+
     public JobMatchingsTimeDTO getWorkplaceTimes(Long pno, Long jpno) {
 
         QJobMatchingsEntity jobMatching = QJobMatchingsEntity.jobMatchingsEntity;
@@ -222,7 +220,6 @@ public class JobMatchingsSearchImpl extends QuerydslRepositorySupport implements
                 .dtoList(dtoList)
                 .totalCount(total)
                 .pageRequestDTO(pageRequestDTO)
->>>>>>> ef4e30c2f2750be133c2bd3686a986f5e37912b2
                 .build();
     }
 }
