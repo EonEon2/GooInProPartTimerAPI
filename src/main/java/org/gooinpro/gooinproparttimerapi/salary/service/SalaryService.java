@@ -102,10 +102,18 @@ public class SalaryService {
     // 총 급여 계산
     private int calculateTotalSalary(List<WorkLogsDTO> logs) {
         int totalSalary = 0;
-        for (WorkLogsDTO log : logs) {
-            long diffMillis = log.getWlendTime().getTime() - log.getWlstartTime().getTime();
-            int hours = (int) (diffMillis / (60 * 60 * 1000));
-            totalSalary += hours * log.getJmhourlyRate();  // hourlyRate -> jmhourlyRate로 변경
+        for (WorkLogsDTO logItem : logs) { // log -> logItem으로 이름 변경
+            long diffMillis = logItem.getWlendTime().getTime() - logItem.getWlstartTime().getTime();
+            int hours = (int) (diffMillis / (60 * 60 * 1000)); // 밀리초를 시간으로 변환
+
+            // 로그 추가: jpname, hourlyRate, startTime, endTime 확인
+            log.info("Calculating salary for jpname: {}, hourlyRate: {}, startTime: {}, endTime: {}",
+                    logItem.getJpname(),
+                    logItem.getJmhourlyRate(),
+                    logItem.getWlstartTime(),
+                    logItem.getWlendTime());
+
+            totalSalary += hours * logItem.getJmhourlyRate(); // 시급 * 근무 시간 계산
         }
         return totalSalary;
     }

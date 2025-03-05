@@ -26,4 +26,5 @@ public class WorkLogsDTO {
     private String jpname;      // 근무지명 (JobPosting에서 가져올 정보)
     private Integer jmhourlyRate;
 
+
 }

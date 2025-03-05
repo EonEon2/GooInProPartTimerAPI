@@ -35,6 +35,9 @@ public class WorkLogsEntity {
 
     private Time wlchangedEndTime; // 변경 퇴근
 
+    @Column(nullable = false, columnDefinition = "timestamp default now()")
+    private Timestamp wlregdate;
+
     @Column(nullable = false)
     private boolean wldelete;
 
