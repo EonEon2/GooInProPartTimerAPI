@@ -15,10 +15,8 @@ import org.gooinpro.gooinproparttimerapi.worklogs.repository.WorkLogsRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.sql.Time;
 import java.sql.Timestamp;
 import java.time.LocalTime;
-import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -104,11 +102,11 @@ public class WorkLogsService {
                 .build();
     }
 
-    public Optional<Timestamp> getRealStartTime(Long pno, Long jmno) {
-        return workLogsRepository.findTodayStartByPnoAndJmno(pno, jmno);
+    public WorkLogsInDTO getTodayStartTimeStatus(Long pno, Long jmno) {
+        return workLogsRepository.getTodayStartTimeStatus(pno, jmno);
     }
 
-    public Optional<Timestamp> getRealEndTime(Long pno, Long jmno) {
-        return workLogsRepository.findTodayEndByPnoAndJmno(pno, jmno);
+    public WorkLogsOutDTO getTodayEndTimeStatus(Long pno, Long jmno) {
+        return workLogsRepository.getTodayEndTimeStatus(pno, jmno);
     }
 }

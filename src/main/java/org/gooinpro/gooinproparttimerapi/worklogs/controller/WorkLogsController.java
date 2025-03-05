@@ -7,13 +7,8 @@ import org.gooinpro.gooinproparttimerapi.worklogs.dto.WorkLogsInDTO;
 import org.gooinpro.gooinproparttimerapi.worklogs.dto.WorkLogsOutDTO;
 import org.gooinpro.gooinproparttimerapi.worklogs.dto.WorkLogsTimeDTO;
 import org.gooinpro.gooinproparttimerapi.worklogs.service.WorkLogsService;
-import org.springframework.data.repository.query.Param;
-import org.springframework.http.RequestEntity;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.sql.Timestamp;
-import java.util.Optional;
 
 @RestController
 @RequestMapping("/part/api/v1/worklog")
@@ -38,16 +33,17 @@ public class WorkLogsController {
     }
 
     @GetMapping("/realStart")
-    public ResponseEntity<Optional<Timestamp>> realStart(@RequestParam Long pno, @RequestParam Long jmno) {
+    public ResponseEntity<WorkLogsInDTO> realStart(@RequestParam Long pno, @RequestParam Long jmno) {
         log.info(" worklog realStart");
 
-        return ResponseEntity.ok(workLogsService.getRealStartTime(pno, jmno));
+        return ResponseEntity.ok(workLogsService.getTodayStartTimeStatus(pno, jmno));
     }
 
     @GetMapping("/realEnd")
-    public ResponseEntity<Optional<Timestamp>> realEnd(@RequestParam Long pno, @RequestParam Long jmno) {
+    public ResponseEntity<WorkLogsOutDTO> realEnd(@RequestParam Long pno, @RequestParam Long jmno) {
         log.info(" worklog realEnd");
 
-        return ResponseEntity.ok(workLogsService.getRealEndTime(pno, jmno));
+        return ResponseEntity.ok(workLogsService.getTodayEndTimeStatus(pno, jmno));
     }
+
 }
