@@ -1,6 +1,7 @@
 package org.gooinpro.gooinproparttimerapi.worklogs;
 
 import lombok.extern.log4j.Log4j2;
+import org.gooinpro.gooinproparttimerapi.worklogs.dto.WorkLogsInDTO;
 import org.gooinpro.gooinproparttimerapi.worklogs.dto.WorkLogsTimeDTO;
 import org.gooinpro.gooinproparttimerapi.worklogs.repository.WorkLogsRepository;
 import org.gooinpro.gooinproparttimerapi.worklogs.repository.search.WorkLogsSearch;
@@ -30,11 +31,22 @@ public class WorkLogsTest {
         Long pno = 17L;
         Long jmno = 1L;
 
-        Optional<Timestamp> result = workLogsRepository.findTodayStartByPnoAndJmno(pno, jmno);
+//        WorkLogsInDTO result = workLogsRepository.findTodayStartByPnoAndJmno(pno, jmno);
+
+        log.info("----------");
+//        log.info(result);
+    }
+
+    @Test
+    @Transactional
+    @Commit
+    public void testWorkLogs2() {
+        Long pno = 26L;
+        Long jmno = 1L;
+
+        WorkLogsInDTO result = workLogsRepository.getTodayStartTimeStatus(pno, jmno);
 
         log.info("----------");
         log.info(result);
-
-
     }
 }
