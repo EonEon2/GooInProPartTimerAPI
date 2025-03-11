@@ -11,6 +11,7 @@ import org.gooinpro.gooinproparttimerapi.parttimerimage.repository.PartTimerImag
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -27,12 +28,21 @@ public class PartTimerImageService {
 
         Optional<PartTimerEntity> pno = partTimerRepository.findByPno(partTimerImageRegisterDTO.getPno());
 
-        PartTimerImageEntity partTimerImage = PartTimerImageEntity.builder()
-                .pifilename(partTimerImageRegisterDTO.getPifilename())
-                .partTimer(pno.get())
-                .build();
+        List<String> ImageList = partTimerImageRegisterDTO.getPifilename();
 
-        partTimerImageRepository.save(partTimerImage);
+        log.info(ImageList);
+
+        for (String Image: ImageList) {
+
+            PartTimerImageEntity partTimerImage = PartTimerImageEntity.builder()
+                    .pifilename(Image)
+                    .partTimer(pno.get())
+                    .build();
+
+            partTimerImageRepository.save(partTimerImage);
+        }
+
+
 
         return "success register";
     }

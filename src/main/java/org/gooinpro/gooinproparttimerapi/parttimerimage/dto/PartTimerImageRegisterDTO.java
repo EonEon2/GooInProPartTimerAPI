@@ -2,12 +2,12 @@ package org.gooinpro.gooinproparttimerapi.parttimerimage.dto;
 
 import lombok.Data;
 
-@Data
+import java.util.List;
 
+@Data
 public class PartTimerImageRegisterDTO {
 
-
-    private String pifilename;
+    private List<String> pifilename;
 
     private Long pno;
 }

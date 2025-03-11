@@ -23,6 +23,8 @@ public class PartTimerImageController {
 
         log.info("partTimerImageRegister");
 
+        log.info("partTimerImageRegisterDTO: " + partTimerImageRegisterDTO);
+
         partTimerImageService.partTimerImageRegister(partTimerImageRegisterDTO);
 
         return ResponseEntity.ok("success register");
