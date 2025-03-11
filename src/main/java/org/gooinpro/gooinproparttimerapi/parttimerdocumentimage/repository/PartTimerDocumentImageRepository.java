@@ -1,0 +1,8 @@
+package org.gooinpro.gooinproparttimerapi.parttimerdocumentimage.repository;
+
+import org.gooinpro.gooinproparttimerapi.parttimerdocumentimage.domain.PartTimerDocumentImageEntity;
+import org.gooinpro.gooinproparttimerapi.parttimerdocumentimage.repository.search.PartTimerDocumentImageSearch;
+import org.springframework.data.jpa.repository.JpaRepository;
+
+public interface PartTimerDocumentImageRepository extends JpaRepository<PartTimerDocumentImageEntity, Long>, PartTimerDocumentImageSearch {
+}
