@@ -25,12 +25,14 @@ public class ReviewController {
         return ResponseEntity.ok().build();
     }
 
-    // 리뷰 리스트
+    // 리뷰 리스트 (키워드 또는 고용주 ID로 검색)
     @GetMapping("/list")
     public ResponseEntity<List<ReviewDTO>> getReviewList(
-            @RequestParam(required = false) String keyword) {
-        log.info("Searching reviews with keyword: {}", keyword);
-        List<ReviewDTO> reviewList = reviewService.getReviewList(keyword);
+            @RequestParam(required = false) String keyword,
+            @RequestParam(required = false) Long eno,
+            @RequestParam(required = false) Long pno) {
+        log.info("Searching reviews with keyword: {}, eno: {}, pno: {}", keyword, eno, pno);
+        List<ReviewDTO> reviewList = reviewService.getReviewList(keyword, eno, pno);
         return ResponseEntity.ok(reviewList);
     }
 }

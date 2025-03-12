@@ -9,6 +9,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.gooinpro.gooinproparttimerapi.parttimer.dto.PartTimerDetailDTO;
 
+import java.sql.Date;
+import java.sql.Timestamp;
+import java.time.Instant;
+
 @Service
 @Transactional
 @RequiredArgsConstructor
@@ -45,6 +49,7 @@ public class PartTimerService {
         partTimer.setPgender(dto.isPgender());
         partTimer.setProadAddress(dto.getProadAddress());
         partTimer.setPdetailAddress(dto.getPdetailAddress());
+
 
         partTimerRepository.save(partTimer);
     }

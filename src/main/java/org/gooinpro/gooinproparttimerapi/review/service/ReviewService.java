@@ -47,10 +47,10 @@ public class ReviewService {
         reviewRepository.save(review);
     }
 
-    // 리뷰 목록 조회 (키워드 검색 포함)
+    // 리뷰 목록 조회 (키워드, 고용주 ID, 파트타이머 ID로 검색)
     @Transactional
-    public List<ReviewDTO> getReviewList(String keyword) {
-        List<ReviewEntity> reviewList = reviewRepository.search(keyword);
+    public List<ReviewDTO> getReviewList(String keyword, Long eno, Long pno) {
+        List<ReviewEntity> reviewList = reviewRepository.search(keyword, eno, pno);
 
         return reviewList.stream()
                 .map(review -> ReviewDTO.builder()

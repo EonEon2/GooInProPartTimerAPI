@@ -16,4 +16,6 @@ public interface JobMatchingsRepository extends JpaRepository<JobMatchingsEntity
     @Query("SELECT j.jmworkStartTime FROM JobMatchingsEntity j Where j.pno.pno = :pno and j.jpno.jpno = :jpno")
     Timestamp findWorkStartTime(@Param("pno") Long pno, @Param("jpno") Long jpno);
 
+    @Query("SELECT j.eno.eno FROM JobMatchingsEntity j WHERE j.jmno = :jmno")
+    Long findEmployerIdByJobMatchingId(@Param("jmno") Long jmno);
 }
