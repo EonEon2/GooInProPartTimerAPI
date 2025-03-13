@@ -5,6 +5,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.gooinpro.gooinproparttimerapi.employer.domain.EmployerEntity;
 import org.gooinpro.gooinproparttimerapi.employer.repository.EmployerRepository;
+import org.gooinpro.gooinproparttimerapi.jobpostings.repository.JobPostingsRepository;
 import org.gooinpro.gooinproparttimerapi.parttimer.domain.PartTimerEntity;
 import org.gooinpro.gooinproparttimerapi.parttimer.repository.PartTimerRepository;
 import org.gooinpro.gooinproparttimerapi.review.domain.ReviewEntity;
@@ -26,6 +27,7 @@ public class ReviewService {
     private final ReviewRepository reviewRepository;
     private final PartTimerRepository partTimerRepository;
     private final EmployerRepository employerRepository;
+    private final JobPostingsRepository jobPostingsRepository;
 
     // 리뷰 등록
     public void createReview(ReviewDTO reviewDTO) {
@@ -53,13 +55,28 @@ public class ReviewService {
         List<ReviewEntity> reviewList = reviewRepository.search(keyword, eno, pno);
 
         return reviewList.stream()
-                .map(review -> ReviewDTO.builder()
-                        .rno(review.getRno())
-                        .pno(review.getPno().getPno())
-                        .eno(review.getEno().getEno())
-                        .rstart(review.getRstart())
-                        .rcontent(review.getRcontent())
-                        .build())
+                .map(review -> {
+                    // 고용주 ID로 공고명 조회
+                    String jpname = "";
+                    try {
+                        // 리스트로 반환받아 첫 번째 항목 선택
+                        List<String> jpnames = jobPostingsRepository.findJobPostingNamesByEmployerId(review.getEno().getEno());
+                        jpname = jpnames.isEmpty() ? "" : jpnames.get(0);
+                    } catch (Exception e) {
+                        log.error("Error fetching jpname for review: " + review.getRno(), e);
+                    }
+
+                    return ReviewDTO.builder()
+                            .rno(review.getRno())
+                            .pno(review.getPno().getPno())
+                            .eno(review.getEno().getEno())
+                            .rstart(review.getRstart())
+                            .rcontent(review.getRcontent())
+                            .jpname(jpname) // 조회한 공고명 설정
+                            .rregdate(review.getRregdate())
+                            .rdelete(review.isRdelete())
+                            .build();
+                })
                 .collect(Collectors.toList());
     }
 }
