@@ -5,5 +5,9 @@ import org.gooinpro.gooinproparttimerapi.parttimerimage.domain.PartTimerImageEnt
 import org.gooinpro.gooinproparttimerapi.parttimerimage.repository.search.PartTimerImageSearch;
 import org.springframework.data.jpa.repository.JpaRepository;
 
-public interface PartTimerImageRepository extends JpaRepository<PartTimerImageEntity, Long>, PartTimerImageSearch {
+import java.util.Optional;
+
+public interface PartTimerImageRepository extends JpaRepository<PartTimerImageEntity, Long> {
+
+    Optional<PartTimerImageEntity> findTopByPartTimerOrderByPinoDesc(PartTimerEntity partTimer);
 }
