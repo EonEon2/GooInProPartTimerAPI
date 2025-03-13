@@ -24,6 +24,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.repository.support.QuerydslRepositorySupport;
 import org.springframework.security.access.method.P;
 
+import java.sql.Timestamp;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -37,50 +38,37 @@ public class JobMatchingsSearchImpl extends QuerydslRepositorySupport implements
 
     @Override
     public List<JobMatchingsListDTO> getCurrentWorkplaces(Long pno) {
-
         QJobMatchingsEntity jobMatching = QJobMatchingsEntity.jobMatchingsEntity;
+        Timestamp now = new Timestamp(System.currentTimeMillis()); // 현재 시간
 
-        log.info("Fetching current workplaces for pno: {}", pno);
-
-        // 현재 근무중인 근무지 조회 (종료일이 없고, 삭제되지 않은 데이터)
         List<JobMatchingsEntity> entities = from(jobMatching)
                 .where(jobMatching.pno.pno.eq(pno)
-                        .and(jobMatching.jmendDate.isNull())
+                        .and(
+                                jobMatching.jmendDate.isNull() // 종료일이 없거나
+                                        .or(jobMatching.jmendDate.after(now)) // 종료일이 미래인 경우
+                        )
                         .and(jobMatching.jmdelete.isFalse()))
-                .orderBy(jobMatching.jmstartDate.desc())  // 시작일 기준 내림차순
+                .orderBy(jobMatching.jmstartDate.desc())
                 .fetch();
 
-        log.info("Found {} current workplace entities", entities.size());
-
         return entities.stream()
-                .map(entity -> {
-                    // 각 엔티티의 상세 정보 로깅
-                    log.info("Processing entity - jmno: {}, jpname: {}", entity.getJmno(), entity.getJpno().getJpname());
-
-                    // WorkPlace 정보 로깅
-                    String roadAddress = Optional.ofNullable(entity.getJpno().getWorkPlace())
-                            .map(WorkPlaceEntity::getWroadAddress)
-                            .orElse(null);
-                    String detailAddress = Optional.ofNullable(entity.getJpno().getWorkPlace())
-                            .map(WorkPlaceEntity::getWdetailAddress)
-                            .orElse(null);
-
-                    log.info("Workplace info - roadAddress: {}, detailAddress: {}", roadAddress, detailAddress);
-
-                    return JobMatchingsListDTO.builder()
-                            .jmno(entity.getJmno())
-                            .jpname(entity.getJpno().getJpname())
-                            .jmregdate(entity.getJmregdate())
-                            .jmstartDate(entity.getJmstartDate())
-                            .jmendDate(entity.getJmendDate())
-                            .jmhourlyRate(entity.getJmhourlyRate())
-                            .jmworkDays(entity.getJmworkDays())
-                            .jmworkStartTime(entity.getJmworkStartTime())
-                            .jmworkEndTime(entity.getJmworkEndTime())
-                            .wroadAddress(roadAddress)
-                            .wdetailAddress(detailAddress)
-                            .build();
-                })
+                .map(entity -> JobMatchingsListDTO.builder()
+                        .jmno(entity.getJmno())
+                        .jpname(entity.getJpno().getJpname())
+                        .jmregdate(entity.getJmregdate())
+                        .jmstartDate(entity.getJmstartDate())
+                        .jmendDate(entity.getJmendDate())
+                        .jmhourlyRate(entity.getJmhourlyRate())
+                        .jmworkDays(entity.getJmworkDays())
+                        .jmworkStartTime(entity.getJmworkStartTime())
+                        .jmworkEndTime(entity.getJmworkEndTime())
+                        .wroadAddress(Optional.ofNullable(entity.getJpno().getWorkPlace())
+                                .map(WorkPlaceEntity::getWroadAddress)
+                                .orElse(null))
+                        .wdetailAddress(Optional.ofNullable(entity.getJpno().getWorkPlace())
+                                .map(WorkPlaceEntity::getWdetailAddress)
+                                .orElse(null))
+                        .build())
                 .collect(Collectors.toList());
     }
 
