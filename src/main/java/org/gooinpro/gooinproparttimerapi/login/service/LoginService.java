@@ -9,6 +9,7 @@ import org.gooinpro.gooinproparttimerapi.parttimer.repository.PartTimerRepositor
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.sql.Timestamp;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -33,6 +34,7 @@ public class LoginService {
                 .pgender(partTimerRegisterDTO.isPgender())
                 .proadAddress(partTimerRegisterDTO.getProadAddress())
                 .pdetailAddress(partTimerRegisterDTO.getPdetailAddress())
+                .pregdate(new Timestamp(System.currentTimeMillis()))
                 .build();
 
         PartTimerEntity saved = partTimerRepository.save(partTimer);

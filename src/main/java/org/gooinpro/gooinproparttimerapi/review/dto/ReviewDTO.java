@@ -5,6 +5,8 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.sql.Timestamp;
+
 @Data
 @Builder
 @NoArgsConstructor
@@ -16,5 +18,9 @@ public class ReviewDTO {
     private Long eno;
     private int rstart;
     private String rcontent;
+
+    private String jpname;
+    private Timestamp rregdate;
+    private boolean rdelete;
 
 }
