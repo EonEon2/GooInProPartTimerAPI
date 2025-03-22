@@ -15,6 +15,8 @@ public class PartTimerRegisterDTO {
 
     private boolean pgender; // 성별 true = 남 , false = 여
 
+    private String ptoken;  //FCM Token
+
     //주소는 입력하지 않을 수 있음
 
     private String proadAddress; // 도로명 주소
