@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.sql.Timestamp;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -77,8 +78,8 @@ public class LoginService {
 
             PartTimerEntity partTimer = result.get();
 
-            //FCM Token 변경 시 DB Update
-            if(!(partTimer.getPtoken().equals(partTimerLoginDTO.getPtoken()))) {
+            //FCM Token 변경 시 or 저장 된 FCM Token 이 Null 일 때 DB Update
+            if (!Objects.equals(partTimer.getPtoken(), partTimerLoginDTO.getPtoken())) {
 
                 partTimer.setPtoken(partTimerLoginDTO.getPtoken());
                 partTimerRepository.save(partTimer);
