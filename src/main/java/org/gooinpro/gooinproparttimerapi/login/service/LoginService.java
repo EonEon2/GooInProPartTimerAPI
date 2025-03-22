@@ -37,6 +37,7 @@ public class LoginService {
                 .proadAddress(partTimerRegisterDTO.getProadAddress())
                 .pdetailAddress(partTimerRegisterDTO.getPdetailAddress())
                 .pregdate(new Timestamp(System.currentTimeMillis()))
+                .ptoken(partTimerRegisterDTO.getPtoken())
                 .build();
 
         PartTimerEntity saved = partTimerRepository.save(partTimer);
