@@ -36,6 +36,12 @@ public class JobMatchingsLogService {
         return jobMatchingsRepository.getJobsDetail(jmno);
     }
 
+    // 근무 매칭 ID로 고용주 ID 조회
+    public Long getEmployerIdByJobMatchingId(Long jmno) {
+        log.info("고용주 ID 조회 service for jmno: {}", jmno);
+        return jobMatchingsRepository.findEmployerIdByJobMatchingId(jmno);
+    }
+
     public JobMatchingsTimeDTO getWorkplaceTimes(Long pno, Long jpno) {
         return jobMatchingsRepository.getWorkplaceTimes(pno, jpno);
     }

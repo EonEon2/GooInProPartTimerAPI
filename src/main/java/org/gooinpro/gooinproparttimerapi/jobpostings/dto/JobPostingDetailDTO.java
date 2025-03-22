@@ -23,5 +23,6 @@ public class JobPostingDetailDTO {
 
     private Time jpworkEndTime; //근무 종료 시간
 
+    private Long eno; // 고용주 ID 추가
 
 }

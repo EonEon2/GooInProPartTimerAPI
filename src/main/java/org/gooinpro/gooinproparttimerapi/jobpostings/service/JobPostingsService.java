@@ -26,7 +26,12 @@ public class JobPostingsService {
     }
 
     public JobPostingDetailDTO JobPostingDetail(Long jpno) {
+        JobPostingDetailDTO jobPostingDetail = jobPostingsRepository.jobPostingDetail(jpno);
 
-        return jobPostingsRepository.jobPostingDetail(jpno);
+        // 고용주 ID(eno) 정보 추가
+        Long eno = jobPostingsRepository.getEmployerIdByJpno(jpno);
+        jobPostingDetail.setEno(eno);
+
+        return jobPostingDetail;
     }
 }

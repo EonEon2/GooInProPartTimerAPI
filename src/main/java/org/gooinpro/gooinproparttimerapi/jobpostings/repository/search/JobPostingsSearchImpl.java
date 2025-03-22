@@ -91,7 +91,9 @@ public class JobPostingsSearchImpl extends QuerydslRepositorySupport implements 
                         jobPostings.jphourlyRate,
                         jobPostings.jpworkDays,
                         jobPostings.jpworkStartTime,
-                        jobPostings.jpworkEndTime)
+                        jobPostings.jpworkEndTime,
+                        jobPostings.employer.eno.as("eno")
+                )
         );
 
         JobPostingDetailDTO list = tupleQuery.fetchFirst();

@@ -21,4 +21,5 @@ public class PartTimerDetailDTO {
     private String proadAddress;
     private String pdetailAddress;
     private Timestamp pregdate;
+    private String profileImageUrl;
 }

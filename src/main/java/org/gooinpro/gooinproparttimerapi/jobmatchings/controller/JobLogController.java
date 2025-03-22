@@ -42,6 +42,13 @@ public class JobLogController {
         return ResponseEntity.ok(jobMatchingsLogService.getJobsDetail(jmno));
     }
 
+    // 근무 매칭 ID로 고용주 ID 조회
+    @GetMapping("/employer/{jmno}")
+    public ResponseEntity<Long> getEmployerIdByJobMatchingId(@PathVariable Long jmno) {
+        log.info("고용주 ID 조회 controller for jmno: {}", jmno);
+        return ResponseEntity.ok(jobMatchingsLogService.getEmployerIdByJobMatchingId(jmno));
+    }
+
     @GetMapping("/time")
     public ResponseEntity<JobMatchingsTimeDTO> getWorkplaceTimes(@RequestParam Long pno, @RequestParam Long jpno) {
         return ResponseEntity.ok(jobMatchingsLogService.getWorkplaceTimes(pno, jpno));

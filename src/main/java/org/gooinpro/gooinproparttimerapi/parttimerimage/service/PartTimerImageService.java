@@ -13,6 +13,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 @Transactional
@@ -41,9 +42,15 @@ public class PartTimerImageService {
 
             partTimerImageRepository.save(partTimerImage);
         }
-
-
-
         return "success register";
     }
+
+    public List<String> getPartTimerImages(Long pno) {
+        return partTimerImageRepository.findByPartTimerPno(pno)
+                .stream()
+                .map(PartTimerImageEntity::getPifilename)
+                .collect(Collectors.toList()); // 모든 이미지 반환
+    }
+
+
 }

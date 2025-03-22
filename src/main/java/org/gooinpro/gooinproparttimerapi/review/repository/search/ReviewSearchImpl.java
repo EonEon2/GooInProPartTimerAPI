@@ -17,15 +17,26 @@ public class ReviewSearchImpl extends QuerydslRepositorySupport implements Revie
     }
 
     @Override
-    public List<ReviewEntity> search(String keyword) {
+    public List<ReviewEntity> search(String keyword, Long eno, Long pno) {
         QReviewEntity review = QReviewEntity.reviewEntity;
 
         JPQLQuery<ReviewEntity> query = from(review);
 
         query.where(review.rdelete.eq(false));
 
+        // 키워드 검색 조건 추가
         if(StringUtils.hasText(keyword)) {
             query.where(review.rcontent.contains(keyword));
+        }
+
+        // 고용주 ID 검색 조건 추가
+        if(eno != null) {
+            query.where(review.eno.eno.eq(eno));
+        }
+
+        // 파트타이머 ID 검색 조건 추가
+        if(pno != null) {
+            query.where(review.pno.pno.eq(pno));
         }
 
         query.orderBy(review.rregdate.desc());
