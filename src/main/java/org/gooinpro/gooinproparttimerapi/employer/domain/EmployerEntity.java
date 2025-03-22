@@ -37,4 +37,7 @@ public class EmployerEntity {
 
     @Column(columnDefinition = "timestamp default now()", nullable = false)
     private Timestamp eregdate; //등록 시간
+
+    @Column(columnDefinition = "VARCHAR(100)")
+    private String etoken;    //FCM Token
 }
