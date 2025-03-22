@@ -3,6 +3,7 @@ package org.gooinpro.gooinproparttimerapi.login.service;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.gooinpro.gooinproparttimerapi.login.dto.PartTimerDTO;
+import org.gooinpro.gooinproparttimerapi.login.dto.PartTimerLoginDTO;
 import org.gooinpro.gooinproparttimerapi.login.dto.PartTimerRegisterDTO;
 import org.gooinpro.gooinproparttimerapi.parttimer.domain.PartTimerEntity;
 import org.gooinpro.gooinproparttimerapi.parttimer.repository.PartTimerRepository;
@@ -66,18 +67,27 @@ public class LoginService {
 //        return partTimerDTO;
 //    }
 
-    public PartTimerDTO findPartTimerService(String pemail) {
+    public PartTimerDTO findPartTimerService(PartTimerLoginDTO partTimerLoginDTO) {
 
         log.info("find--------------------");
 
-        Optional<PartTimerEntity> result = partTimerRepository.findByPemail(pemail);
+        Optional<PartTimerEntity> result = partTimerRepository.findByPemail(partTimerLoginDTO.getPemail());
 
         if(result.isPresent()) {
 
+            PartTimerEntity partTimer = result.get();
+
+            //FCM Token 변경 시 DB Update
+            if(!(partTimer.getPtoken().equals(partTimerLoginDTO.getPtoken()))) {
+
+                partTimer.setPtoken(partTimerLoginDTO.getPtoken());
+                partTimerRepository.save(partTimer);
+            }
+
             return PartTimerDTO.builder()
-                    .pno(result.get().getPno())
-                    .pemail(result.get().getPemail())
-                    .pname(result.get().getPname())
+                    .pno(partTimer.getPno())
+                    .pemail(partTimer.getPemail())
+                    .pname(partTimer.getPname())
                     .newUser(false)
                     .build();
         }

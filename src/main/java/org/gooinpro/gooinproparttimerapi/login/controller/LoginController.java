@@ -4,6 +4,7 @@ import io.jsonwebtoken.ExpiredJwtException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.gooinpro.gooinproparttimerapi.login.dto.PartTimerDTO;
+import org.gooinpro.gooinproparttimerapi.login.dto.PartTimerLoginDTO;
 import org.gooinpro.gooinproparttimerapi.login.dto.PartTimerRegisterDTO;
 import org.gooinpro.gooinproparttimerapi.login.dto.TokenResponseDTO;
 import org.gooinpro.gooinproparttimerapi.login.exception.PartTimerExceptions;
@@ -139,10 +140,10 @@ public class LoginController {
         }
     }
 
-    @GetMapping("find/{pemail}") // pathvariable
-    public ResponseEntity<TokenResponseDTO> find(@PathVariable String pemail) {
+    @PutMapping("find") // pathvariable
+    public ResponseEntity<TokenResponseDTO> find(@RequestBody PartTimerLoginDTO partTimerLoginDTO) {
 
-        PartTimerDTO partTimerDTO = loginService.findPartTimerService(pemail);
+        PartTimerDTO partTimerDTO = loginService.findPartTimerService(partTimerLoginDTO);
 
         if(partTimerDTO.isNewUser())
             return ResponseEntity.ok(TokenResponseDTO.builder()

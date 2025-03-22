@@ -8,4 +8,6 @@ public class PartTimerLoginDTO {
     private String pemail;
 
     private String pname;
+
+    private String ptoken;
 }
