@@ -47,4 +47,7 @@ public class PartTimerEntity {
 
     @Column(columnDefinition = "VARCHAR(100)")
     private String pdetailAddress; // 상세 주소
+
+    @Column(columnDefinition = "VARCHAR(100)")
+    private String ptoken;    //FCM Token
 }
