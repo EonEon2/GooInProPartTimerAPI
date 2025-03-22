@@ -39,6 +39,8 @@ org:
     refreshTime: 10000
     alwaysNew: true
 
+    fcmurl: ${FCM_URL}
+
 naver:
   map:
     api:
