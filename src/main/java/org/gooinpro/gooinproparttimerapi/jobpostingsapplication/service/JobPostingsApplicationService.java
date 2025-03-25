@@ -91,7 +91,7 @@ public class JobPostingsApplicationService {
 
         fcmRequestDTO.setToken(Collections.singletonList(jpno.get().getEmployer().getEtoken()));
         fcmRequestDTO.setTitle(jpno.get().getJpname() + " 지원");
-        fcmRequestDTO.setContent(dto.getJpacontent());
+        fcmRequestDTO.setBody(dto.getJpacontent());
 
         sendFCMMessage(fcmRequestDTO).subscribe();
 

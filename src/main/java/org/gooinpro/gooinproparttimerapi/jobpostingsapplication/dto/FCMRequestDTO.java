@@ -11,5 +11,5 @@ public class FCMRequestDTO {
 
     private String title;   //알림 제목
 
-    private String content; //알림 내용
+    private String body; //알림 내용
 }
