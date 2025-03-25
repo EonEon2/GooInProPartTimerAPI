@@ -80,6 +80,7 @@ public class JobPostingsApplicationService {
                 .jpacontent(dto.getJpacontent())
                 .jpahourlyRate(dto.getJpahourlyRate())
                 .jpadelete(false)
+                .jpastatus(0)
                 .partTimer(pno.get())
                 .jobPostings(jpno.get())
                 .build();
