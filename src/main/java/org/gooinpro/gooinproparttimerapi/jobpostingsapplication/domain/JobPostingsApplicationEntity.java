@@ -28,7 +28,7 @@ public class JobPostingsApplicationEntity {
     private boolean jpadelete;
 
     @Column(nullable = false)
-    private int jpastatus = 0;  //0: 대기(고용인 확인 전), 1: 수락, 2: 거절
+    private int jpastatus;  //0: 대기(고용인 확인 전), 1: 수락, 2: 거절
 
     @JoinColumn(name = "pno")
     @ManyToOne(fetch = FetchType.LAZY)
